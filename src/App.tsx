@@ -1,25 +1,162 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Login from './pages/login/login';
+import Home from './pages/homepage/home';
+import Dashboard from './pages/dashboard/dashboard';
+import Inscription from './pages/inscription/inscription';
+
+import Profil from './pages/profil/profil';
+import User from './pages/user/user';
+import { Route, Routes, Navigate, useNavigate, useLocation  } from 'react-router-dom';
+import Abonnement from './pages/abonnement/abonnement';
+import MenuDashboard from './components/menu';
+import { Grid, CssBaseline, Drawer, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
+import Dashboard_component from './components/dashboard_component';
+import ResponsiveDrawer from './components/drawer_menu';
+import { Divider } from '@mui/joy';
+import { InboxRounded } from '@mui/icons-material';
+import System from './pages/systeme/system';
+import Historique from './pages/historique/historique';
+import Clients from './pages/clients/clients';
+
+
 
 function App() {
+
+  const [showHome, setshowHome] = useState(false)
+  const [showLogin, setshowLogin] = useState(false)
+
+  useEffect(() => {
+    if(window.location.pathname =='/' || window.location.pathname =='/home') 
+      {
+        console.log(window.location.pathname);
+        
+        setshowHome(true)
+      }else if(window.location.pathname =='/' || window.location.pathname =='/login') {
+        console.log(window.location.pathname);
+        setshowLogin(true)  
+      }else{
+        setshowHome(false);
+        setshowLogin(false)
+      }
+    
+
+
+  }, [])
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    
+    {
+      showHome && <Home />
+    }
+
+    {
+      showLogin && <Login />
+    }
+     
+    
+    {!showHome && !showLogin && <Grid sx={{background: '#5280fc', minHeight:'100vh',p:2 }}>
+    {/* &nbsp; */}
+    {/* <Inscription /> */}
+    {/* <Profil /> */}
+    {/* <User /> */}
+    {/* <Dashboard /> */}
+
+    
+
+    <Grid
+          container
+          component="main"
+          className="img"
+          sx={{
+
+              display:'flex',
+              justifyContent:'start',
+              // maxHeight: '85%',
+              height:"auto",
+              width: '90%',
+              margin: '0px auto',
+              boxShadow: 3,
+              borderRadius: 5,
+              background: "#fff",
+              // mx: 13,
+              // pl:1.5,
+          
+             
+          }}
+      >
+          <CssBaseline enableColorScheme />
+          <Grid
+              item
+              xs={false}
+              sm={2.5}
+              md={2.5}
+              sx={{
+                  minHeight:'80%',
+                  borderRightRadius:5,
+              }}
+          >
+
+                  <MenuDashboard />
+              {/* <ResponsiveDrawer/> */}
+
+              
+
+
+          </Grid>
+          <Grid
+              item
+              xs={false}
+              sm={9.5}
+              md={9.5}
+              
+              sx={{
+                  background:"#E0E0E0",
+                  borderRadius:5,
+                  borderBottomLeftRadius:10,
+                  boxShadow:5,
+                  pt:5
+              }}
+          >
+
+                  {/* <Dashboard_component /> */}
+                  <Routes>
+
+          <Route  path='/dashboard' element={<Dashboard />}/>
+          <Route  path='/profil' element={<Profil />}/>
+          <Route  path='/user' element={<User />}/>
+          <Route  path='/abonnement' element={<Abonnement  />}/>
+          <Route  path='/systeme' element={<System/>}/>
+          <Route  path='/historique' element={<Historique />}/>
+          <Route  path='/clients' element={<Clients />}/>
+          {/* 
+          <Route  path='/moyentemp' element={<MoyTempHum />}/>
+          */}
+          <Route  path='/inscription' element={<Inscription />}/> 
+          {/* <Route  path='/login' element={<Login />}/> */}
+          {/* <Route  path='/' element={<Home />}/> */}
+          {/* <Route  path='/edituser' element={<Edituser />}/>
+          <Route  path='*' element={<NotFound />}/> */}
+         
+          
+
+    </Routes>
+
+
+          </Grid>
+      </Grid>
+
+
+
+
+
+  </Grid>
+    
+    }
+    </>
   );
 }
 

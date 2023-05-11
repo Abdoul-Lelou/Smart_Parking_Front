@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Login from './pages/login/login';
 import Home from './pages/homepage/home';
@@ -8,14 +7,10 @@ import Inscription from './pages/inscription/inscription';
 
 import Profil from './pages/profil/profil';
 import User from './pages/user/user';
-import { Route, Routes, Navigate, useNavigate, useLocation  } from 'react-router-dom';
+import { Route, Routes  } from 'react-router-dom';
 import Abonnement from './pages/abonnement/abonnement';
 import MenuDashboard from './components/menu';
-import { Grid, CssBaseline, Drawer, ListItem, ListItemButton, ListItemIcon } from '@mui/material';
-import Dashboard_component from './components/dashboard_component';
-import ResponsiveDrawer from './components/drawer_menu';
-import { Divider } from '@mui/joy';
-import { InboxRounded } from '@mui/icons-material';
+import { Grid, CssBaseline } from '@mui/material';
 import System from './pages/systeme/system';
 import Historique from './pages/historique/historique';
 import Clients from './pages/clients/clients';

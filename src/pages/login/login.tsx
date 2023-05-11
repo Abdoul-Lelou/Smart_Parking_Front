@@ -9,12 +9,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './login.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-// import { ToastContainer, toast } from 'react-toastify';
-// import baseUrl from '../../baseUrl'
+import { ToastContainer, toast } from 'react-toastify';
+import baseUrl from '../../baseUrl';
+import axios from "axios";
 
 
 const theme = createTheme();
@@ -25,20 +26,20 @@ export default function Login() {
     const [email, setEmail] = useState('' as any);
     const [password, setPassword] = useState('' as any);
     const [loader, setloader] = useState(false);
+    const [error, setError] = useState('' as any);
+    const [errorMsg, setErrorMsg] = useState(false);
+
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-
-    //   const notify = (msg:any) => toast.error(msg);
-    //   const notifyReset = (msg:any) => toast.success(msg);
-
-
-    const login = async (e: any) => {
-        e.preventDefault();
-        // Connexion(email,password)
-    }
-
     const [showPassword, setShowPassword] = React.useState(false);
+
+      const notify = (msg:any) => toast.error(msg);
+      const notifyReset = (msg:any) => toast.success(msg);
+
+
+    
+
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -46,9 +47,122 @@ export default function Login() {
         event.preventDefault();
     };
 
+
+    useEffect(() => {
+        // getApiData();
+        // try {
+        //     axios({
+  
+        //         // Endpoint to send files
+        //         url: "http://localhost:8000/api/getAll/",
+        //         method: "POST",
+        //         headers: {
+        //           authorization: "your token comes here",
+        //         },
+                
+            
+        //       })
+        //         // Handle the response from backend here
+        //         .then((res) => {console.log(res.data);
+        //          })
+            
+        //         // Catch errors if any
+        //         .catch((err) => { });
+        // } catch (error:any) {
+            
+        // }
+        
+      }, []);
+
+    function isValidEmail(e:any) {
+        return /\S+@\S+\.\S+/.test(e);
+      }
+    
+    //   const handleChange = e:any => {
+    //     if (!isValidEmail(e.target.value)) {
+    //       setError('Email is invalid');
+    //     } else {
+    //       setError(null);
+    //     }
+    
+    //     setEmail(e.target.value);
+    //   };
+
+      const checkEmail =(e:any)=>{
+        if (!isValidEmail(e)) {
+            setError('Email invalid')
+        }else{
+            setError(" ");
+        }
+        setEmail(e);
+      }
+
+
+    //   const logins =async(e:any)=>{
+    //     e.preventDefault();
+    //     Connexion(email,password)
+    //   }
+    
+    const getApiData = async () => {
+        const response = await fetch(
+        //   "http://127.0.0.1:8000/api/getAll"
+        "http://127.0.0.1:8000/api/getAll/"
+        ).then((response) => console.log(response)).then((e:any)=>{
+            console.log(e);
+            
+        });
+      
+        // update the state
+        console.log(response);
+       
+     
+      };
+    
+     
+
+      const login =  (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        console.log(email, password);
+        // return;
+        baseUrl.post('login',{
+            email:email,
+            password:password
+          } ).then(function (response: { data: any; }) {
+           
+            let userReponse = response.data;
+            console.log(response.data.data.token);
+            // return
+            if (userReponse?.data?.userId) {
+              localStorage.setItem("token", userReponse?.data?.token)
+              localStorage.setItem("email", userReponse?.data?.email)
+              localStorage.setItem("uid", userReponse?.data?.userId)
+              
+              setTimeout(() => window.location.pathname ="dashboard", 1000);
+            }else{
+                
+                console.log('dddddd');
+                
+                notify("Email ou mot de passe incorrect")
+                return;
+            }    
+            
+          })
+          .catch((error:any)=> {
+            if(error.code ==="ERR_BAD_REQUEST"){
+                setErrorMsg(true)
+                setTimeout(() => {
+                    setErrorMsg(false)
+                }, 1500);
+            }
+            
+           
+          });
+      };
+
+
     return (
         <>
-            <ThemeProvider theme={theme}>
+            {/* <ThemeProvider theme={theme}> */}
                 <Grid
                     container
                     component="main"
@@ -58,6 +172,7 @@ export default function Login() {
                         maxHeight: '100%',
                         width: '80%',
                         margin: '0px auto',
+                        
                         // boxShadow: 3,
                         backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'
                     }}
@@ -68,9 +183,9 @@ export default function Login() {
                         xs={false}
                         sm={12}
                         md={12}
+                        sx={{boxShadow:5,m:1}}
 
                     >
-
 
                         <Box
                             sx={{
@@ -86,14 +201,12 @@ export default function Login() {
                             }}
                         >
 
-
+                           {errorMsg && <span style={{color:"red"}}> Email ou mot de passe incorrect</span> }
 
                             <Box component="form" noValidate sx={{ maxWidth: "60%", boxShadow: 5, p: 4, background: "#fff" }}>
 
 
-
-                                {/* <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined"> */}
-
+                                <Typography  align='center'>
                                     <TextField
                                         margin="normal"
                                         required
@@ -104,74 +217,63 @@ export default function Login() {
                                         autoComplete="email"
                                         autoFocus
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={e=>checkEmail(e.target.value)}
+                                        // onChange={(e) => setEmail(e.target.value)}
                                         sx={{ backgroundColor: 'white',  m:1, width: '35ch' }}
                                         variant="outlined"
                                     />
-
-                                    
-                                {/* </FormControl> */}
-
-                                <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                    <OutlinedInput
-                                        id="outlined-adornment-password"
-                                        type={showPassword ? 'text' : 'password'}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
-                                                    edge="end"
-                                                >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        label="Password"
-                                    />
-                                </FormControl>
-
+                                </Typography>
+                                    {error && <Typography component="em" sx={{color: 'red',fontSize:14}}>{error}</Typography>}
+                                <Typography  align='center'>
+                                    <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
+                                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                        <OutlinedInput
+                                            id="outlined-adornment-password"
+                                            type={showPassword ? 'text' : 'password'}
+                                            endAdornment={
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        onClick={handleClickShowPassword}
+                                                        onMouseDown={handleMouseDownPassword}
+                                                        edge="end"
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            }
+                                            label="Password"
+                                            onChange={e=> setPassword(e.target.value)}
+                                        />
+                                    </FormControl>
+                                </Typography>
                                 &nbsp;
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    onClick={e => {
-                                        login(e); setloader(true);
-                                        setTimeout(() => {
-                                            setloader(false)
-                                        }, 2000);
-                                    }}
-                                    // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
-                                    sx={{ maxHeight: '50px', maxWidth: '250px', mt: 2 }}
-                                    disabled={!email || !password}
-                                >
-                                    {
-                                        !loader ?
-                                            "Se Connecter"
-                                            :
-                                            // <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
-                                            <CircularProgress color="success" size={25} />
-                                        // </Stack>
+                                <Typography  align='center'>
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        onClick={e => {
+                                            login(e); setloader(true);
+                                            setTimeout(() => {
+                                                setloader(false)
+                                            }, 2000);
+                                        }}
+                                        // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
+                                        sx={{ maxHeight: '50px', maxWidth: '250px', mt: 2 }}
+                                        disabled={!email || !password}
+                                    >
+                                        {
+                                            !loader ?
+                                                "Se Connecter"
+                                                :
+                                                // <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                                                <CircularProgress color="success" size={25} />
+                                            // </Stack>
 
-                                    }
-                                </Button>
-
-                                <Grid container>
-                                    <Grid item xs p={2}>
-
-                                        <Link href="#" variant="body2" onClick={handleOpen}>
-                                            <Typography>Mot de passe oublié?</Typography>
-                                        </Link>
-
-
-                                    </Grid>
-
-                                </Grid>
-                                {/*  <Copyright sx={{ mt: 5 }} /> */}
-
+                                        }
+                                    </Button>
+                                </Typography>
                             </Box>
 
                         </Box>
@@ -182,9 +284,21 @@ export default function Login() {
                     </Grid>
                 </Grid>
 
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
 
 
+            <ToastContainer 
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
         </>
 

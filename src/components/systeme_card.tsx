@@ -6,7 +6,7 @@ import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import { Chip, Dialog, useTheme } from '@mui/material';
 import PreviewIcon from '@mui/icons-material/Preview';
-import FullScreenDialog from './visualisation';
+import FullScreenDialog from './administration';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

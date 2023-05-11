@@ -127,22 +127,7 @@ export default function Abonnement_component() {
   };
 
   return (
-    // <Box sx={{ height: 400, width: '100%' }}>
-    //   <DataGrid
-    //     rows={rows}
-    //     columns={columns}
-    //     initialState={{
-    //       pagination: {
-    //         paginationModel: {
-    //           pageSize: 5,
-    //         },
-    //       },
-    //     }}
-    //     pageSizeOptions={[5]}
-    //     // checkboxSelection
-    //     disableRowSelectionOnClick
-    //   />
-    // </Box>
+    
 
     <Box sx={{ width: '80%', m:'0 auto',bgcolor:'#fff', p:1 }}>
       {/* <Typography variant='h4' sx={{p:1,boxShadow:1, fontWeight:"bold"}} align='center'>TYPE ABONNEMENT</Typography> */}

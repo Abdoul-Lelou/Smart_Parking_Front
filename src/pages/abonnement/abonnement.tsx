@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DataTable from '../../components/abonnement_tab';
+import DataTable from '../../components/submit_type';
 import ShowBackdrop from '../../components/backdrop';
 
 

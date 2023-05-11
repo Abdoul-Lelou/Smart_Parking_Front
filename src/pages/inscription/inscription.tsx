@@ -10,6 +10,7 @@ import './inscription.css'
 import { useState } from 'react';
 import { CircularProgress, MenuItem } from '@mui/material';
 import ShowBackdrop from '../../components/backdrop';
+import baseUrl from '../../baseUrl';
 // import { ToastContainer, toast } from 'react-toastify';
 // import baseUrl from '../../baseUrl'
 
@@ -61,6 +62,65 @@ export default function Inscription() {
 
     const switchForm = () => {
         suivant ? setsuivant(false) : setsuivant(true)
+    }
+
+    const signin =(e:any)=>{
+        e.preventDefault();
+
+        console.log(email,password, code,nom, prenom, abonnement, carte, tel);
+
+        
+            // e.preventDefault()
+        
+          
+            const user ={
+              "nom":nom,"prenom":prenom,"email":email,"password":password,
+              "telephone":tel,"code":code,"typeAbonnement":abonnement,"numeroCarte":carte
+            }
+         
+        
+        
+        
+            const token = localStorage.getItem('token')
+        
+            const config = { headers: { Authorization: token } }
+            const data = user
+        
+            baseUrl.post("/post", data, config).then((res:any) => {
+              console.log(res.data);
+              
+            //   if(res.data =="Utilisateur ajouté"){
+            //     setsuccessStatus(true);
+            //     // setNom('');setPrenom('');setEmail('');setPassword('');setPassword2('');setRole('')
+            //     setTimeout(() => {
+            //     setsuccessStatus(false);
+            //     window.location.reload();  
+            //     }, 2000);
+            //     // vérification si l'email existe déjà
+            //   }else if(res.data.code =="auth/email-already-in-use"){
+            //     seterrorStatus(true);
+            //     setmsgerror("Email existe déjà")
+            //     setTimeout(() => {
+            //       seterrorStatus(false);  
+            //     }, 3000);
+            //   }
+            //   // vérification du format email
+            //   else if(res.data.code =="auth/invalid-email"){
+            //     seterrorStatus(true);
+            //     setmsgerror("Email invalide")
+            //     setTimeout(() => {
+            //       seterrorStatus(false);  
+            //     }, 3000);
+            //   }
+            }).catch((error:any) =>{
+                console.log(error);
+                
+                // seterrorStatus(true);
+                // setTimeout(() => {
+                //   seterrorStatus(false);  
+                // }, 2000);
+            })
+        
     }
 
     return (
@@ -133,7 +193,7 @@ export default function Inscription() {
                                             autoFocus
                                             size='small'
                                             value={nom}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setnom(e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                             variant="outlined"
                                         />
@@ -148,7 +208,7 @@ export default function Inscription() {
                                             autoFocus
                                             size='small'
                                             value={prenom}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setprenom(e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                             variant="outlined"
                                         />
@@ -164,7 +224,7 @@ export default function Inscription() {
                                             autoFocus
                                             value={email}
                                             size='small'
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setEmail   (e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                             variant="outlined"
                                         />
@@ -181,7 +241,7 @@ export default function Inscription() {
                                             autoFocus
                                             size='small'
                                             value={tel}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => settel(e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                             variant="outlined"
                                         />
@@ -207,60 +267,67 @@ export default function Inscription() {
                                             Inscription
                                         </Typography>
 
-
-
-                                        {/* <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        id="carte"
-                                        label="N° de la carte"
-                                        name="nom"
-                                        autoComplete="nom"
-                                        autoFocus
-                                        size='small'
-                                        value={carte}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        sx={{ backgroundColor: 'white', m: 1, width: '25ch' }}
-                                        variant="outlined"
-                                    /> */}
-
-
                                         <TextField
                                             margin="normal"
                                             required
                                             fullWidth
-                                            id="abonnement"
+                                            id="carte"
                                             label="N° de la carte"
-                                            name="abonnement"
+                                            name="carte"
                                             autoComplete="abonnement"
                                             autoFocus
                                             size='small'
-                                            value={abonnement}
-                                            onChange={(e) => setabonnement(e.target.value)}
+                                            value={carte}
+                                            onChange={(e) => setcarte(e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                             variant="outlined"
                                         />
 
                                         <TextField
-                                            id="carte"
+                                            id="abonnement"
                                             select
                                             label="Type d'abonnement"
                                             defaultValue=""
                                             size='small'
-                                            value={carte}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={abonnement}
+                                            onChange={(e) => {setabonnement(e.target.value); console.log(abonnement);
+                                            }}
                                             // helperText="Please select your currency"
                                             sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
                                         >
+                                            <MenuItem value="mois">
+                                                Mois
+                                            </MenuItem>
                                             <MenuItem value="semaine">
                                                 Semaine
                                             </MenuItem>
-                                            <MenuItem value="semaine">
-                                                Mois
-                                            </MenuItem>
 
                                         </TextField>
+
+                                        {/* <TextField
+                                            // id="filled-select-currency-native"
+                                            select
+                                            label="Type d'abonnement"
+                                            // defaultValue="EUR"
+                                            SelectProps={{
+                                                native: true,
+                                            }}
+                                            size='small'
+                                            // helperText="Please select your currency"
+                                            // variant="filled"
+                                            onChange={(e) => {setabonnement(e.target.value); console.log(abonnement);
+                                            }}
+                                            sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
+                                            >
+                                            
+                                                <option value="mois">
+                                                    Mois
+                                                </option>
+                                                <option value="semaine">
+                                                    Semaine
+                                                </option>
+                                        
+                                            </TextField> */}
 
                                         <TextField
                                             margin="normal"
@@ -306,7 +373,7 @@ export default function Inscription() {
                                             autoFocus
                                             size='small'
                                             value={code}
-                                            onChange={(e) => setconfirmPass(e.target.value)}
+                                            onChange={(e) => setcode(e.target.value)}
                                             sx={{ backgroundColor: 'white', m: 1, width: '45ch' }}
                                             variant="outlined"
                                         />
@@ -316,6 +383,8 @@ export default function Inscription() {
                                             fullWidth
                                             variant="contained"
                                             onClick={e => {
+
+                                                signin(e)
                                                 setloader(true);
                                                 setTimeout(() => {
                                                     setloader(false)

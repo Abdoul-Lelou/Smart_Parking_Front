@@ -180,7 +180,7 @@ export default function Card_place() {
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
-            {"Parking Ila Touba"}
+            {"Parking Simplon"}
           </DialogTitle>
           
           

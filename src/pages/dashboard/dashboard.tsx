@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Dashboard_component from '../../components/dashboard_component'
+import Dashboard_component from '../../components/component_dashboard'
 import ShowBackdrop from '../../components/backdrop'
 
 const Dashboard = () => {

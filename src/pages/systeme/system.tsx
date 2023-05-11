@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SystemTab from '../../components/systeme'
+import SystemTab from '../../components/systeme_tab'
 import ShowBackdrop from '../../components/backdrop';
 
 const System = () => {
@@ -12,11 +12,7 @@ const System = () => {
   return (
     
     <>
-       {loading ?
-        <ShowBackdrop />
-       :
-        <SystemTab />
-       }
+       {loading ? <ShowBackdrop /> : <SystemTab />}
     </>
 
   )

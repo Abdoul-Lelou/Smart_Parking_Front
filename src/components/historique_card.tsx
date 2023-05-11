@@ -10,7 +10,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { Close } from '@mui/icons-material';
 
-import HistoriqueStationnement from './historique_stationnement';
+import HistoriqueStationnement from './historique_parking';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

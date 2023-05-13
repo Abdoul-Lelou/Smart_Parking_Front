@@ -11,6 +11,8 @@ import { GridCloseIcon } from '@mui/x-data-grid';
 import { TransitionProps } from '@mui/material/transitions';
 import SimpleAccordion from './type_abonnement';
 import MoisAbonnement from './mois_abonnement';
+import baseUrl from '../baseUrl';
+import { useState } from 'react';
 
 
 const Transition1 = React.forwardRef(function Transition(
@@ -34,6 +36,35 @@ const Transition2 = React.forwardRef(function Transition(
 export default function Card_dashboard() {
   const [open_un, setopenUn] = React.useState(false)
   const [open_deux, setopenDeux] = React.useState(false)
+  const [donnee, setdonnee] = useState("" as any)
+  const [abonnementMois, setabonnementMois] = useState("" as any)
+  const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
+
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    console.log("res.data");
+    
+    baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
+      let tab1 = [];
+      let tab2 = []
+      for (const iterator of res.data) {
+        if(iterator.typeAbonnement =="mois"){
+
+          tab1.push(iterator)
+          console.log(tab1);
+          setabonnementMois(tab1)
+        }else{
+          tab2.push(iterator)
+          console.log(tab2);
+          setabonnementSemaine(tab2)
+        }
+        
+      }
+      setdonnee(res.data);
+      
+    })
+  }, [])
 
   const openDialog1 = () => {
     setopenUn(true);
@@ -47,6 +78,8 @@ export default function Card_dashboard() {
     setopenDeux(false);
     setopenUn(false);
   };
+
+  
 
   return (
     <>
@@ -121,7 +154,7 @@ export default function Card_dashboard() {
           </Toolbar>
         </AppBar>
         
-        <SimpleAccordion />
+        <SimpleAccordion {...abonnementSemaine} />
         
       </Dialog>
 
@@ -151,7 +184,7 @@ export default function Card_dashboard() {
           </Toolbar>
         </AppBar>
         
-            <MoisAbonnement />
+            <MoisAbonnement  />
         
       </Dialog>
     </div>

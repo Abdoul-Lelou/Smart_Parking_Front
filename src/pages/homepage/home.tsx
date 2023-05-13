@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CssBaseline, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, Chip, CssBaseline, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import React from 'react'
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -13,33 +13,34 @@ const Home = () => {
         <Grid
             container
             component="main"
-            className="img"
+            // className="img"
             sx={{
 
-                maxHeight: '90%',
+                maxHeight: '70%',
                 width: '80%',
-                margin: '5px auto',
+                margin: '15px auto',
+               
                 border: '1px solid',
                 boxShadow: 3,
                 borderRadius: 5,
                 background: "#256",
-                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'
+                // backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'
             }}
         >
             <CssBaseline />
-            <Grid
+            {/* <Grid
                 item
                 xs={false}
                 sm={12}
                 md={12}
 
-            >
+            > */}
 
 
                 <Box
                     sx={{
-                        my: 8,
-                        mx: 10,
+                        my: 5,
+                        mx: 8,
                         display: 'flex',
                         justifyContent: 'flex-start',
                         // alignItems: 'center',
@@ -64,13 +65,16 @@ const Home = () => {
                         }}>
 
 
-                        <Typography variant="h6" mt={2} component="h6">
-                            h1. Heading
+                        <Typography align='center' variant="h5" mt={2} component="h5">
+                            SMART PARKING
                         </Typography>
-
-                        <Typography variant="subtitle1" sx={{ fontStyle: 'bold' }} component="span">
+                        <Typography align='center' variant="h5" mt={2} component="h5">
                             Pourquoi nous choisir ?
                         </Typography>
+
+                        {/* <Typography  align='center' variant="body1" sx={{ fontStyle: 'bold',border:"1px solid",ml:"auto" }} component="span">
+                            Pourquoi nous choisir ?
+                        </Typography> */}
                         <Grid container
                             sx={{
                                 // border:'1px solid',
@@ -183,9 +187,19 @@ const Home = () => {
 
                             </Grid>
                             <Divider />
-                            <Typography variant="inherit" sx={{ fontFamily: 'bold', m: '0 auto' }} component="button">
+                            {/* <Typography variant="inherit" sx={{ fontFamily: 'bold', m: '0 auto' }} component="button">
                                 <a href='login'>Se connecter</a>
-                            </Typography>
+                            </Typography> */}
+
+                            <Chip 
+                                label={"Se connecter"} 
+                                variant='filled' 
+                                color='primary' 
+                                size="small"
+                                sx={{margin: "auto"}}
+                                clickable
+                                onClick={()=> window.location.pathname ='login'}
+                            />
 
                         </Grid>
 
@@ -257,7 +271,7 @@ const Home = () => {
 
 
 
-            </Grid>
+            {/* </Grid> */}
         </Grid>
     )
 }

@@ -11,6 +11,7 @@ import React from 'react';
 import { Close } from '@mui/icons-material';
 
 import HistoriqueStationnement from './historique_parking';
+import HistoriqueTab from './historique_tab';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -102,16 +103,16 @@ export default function Card_historique() {
               <Close />
             </IconButton>
            
-            <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
+            {/* <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
               HISTORIQUE STATIONNEMENT
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            </Typography> */}
+            {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
         
-            <HistoriqueStationnement />
+            <HistoriqueTab />
         
       </Dialog>
     </div>

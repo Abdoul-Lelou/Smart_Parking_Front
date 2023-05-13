@@ -8,6 +8,8 @@ import { IconButton } from '@mui/joy';
 import MoisArchive from './mois_archive';
 import { Chip } from '@mui/material';
 import { Delete, Done } from '@mui/icons-material';
+import baseUrl from '../baseUrl';
+import { useState } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,6 +20,28 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function MoisAbonnement() {
+
+  const [abonnementMois, setabonnementMois] = useState("" as any)
+
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    console.log("res.data");
+    
+    baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
+      let tab = []
+      for (const iterator of res.data) {
+        if(iterator.typeAbonnement =="mois"){
+
+          tab.push(iterator)
+          console.log(tab);
+          setabonnementMois(tab)
+        }
+        
+      }
+      
+    })
+  }, [])
 
   const columns: GridColDef[] = [
     // { field: 'id', headerName: 'ID', width: 90 },
@@ -67,14 +91,14 @@ export default function MoisAbonnement() {
       ),
     },
     {
-      field: 'inscription',
+      field: 'telephone',
       // headerName: 'Matricule',
       width: 100,
       editable: true,
       align:'center', flex:10, headerAlign:'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
-          {'Inscription '}
+          {'Tel '}
             {/* <span role="img" aria-label="enjoy">
               🎂
             </span> */}
@@ -82,23 +106,23 @@ export default function MoisAbonnement() {
       ),
     },
     {
-        field: 'action',
+        field: 'rfid',
         // headerName: 'Actions',
         width: 100,
         sortable: false,
-        renderCell: (params) => (
-          <div>      
-            <IconButton 
-            // onClick={()=> enableUser(params.id)}
-            >
-              {/* <EditOutlined sx={{ color: 'red' }} /> */}
-              supp
-            </IconButton>
-          </div>
-        ),
+        // renderCell: (params) => (
+        //   <div>      
+        //     <IconButton 
+        //     // onClick={()=> enableUser(params.id)}
+        //     >
+        //       {/* <EditOutlined sx={{ color: 'red' }} /> */}
+        //       supp
+        //     </IconButton>
+        //   </div>
+        // ),
         renderHeader: (params: GridColumnHeaderParams) => (
           <strong>
-            {'Action '}
+            {'Code Rfid '}
               {/* <span role="img" aria-label="enjoy">
                 🎂
               </span> */}
@@ -128,8 +152,9 @@ export default function MoisAbonnement() {
             </Item>
           <Item sx={{mt:1,boxShadow:5}}>
           <DataGrid
-                rows={rows}
+                rows={abonnementMois}
                 columns={columns}
+                getRowId={(abonnementMois) => abonnementMois._id}
                 initialState={{
                   pagination: {
                     paginationModel: {

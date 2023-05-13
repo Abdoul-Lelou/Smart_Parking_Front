@@ -1,113 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
-import { Typography } from '@mui/material';
+import { Chip, Typography } from '@mui/material';
+import { useState } from 'react';
+import baseUrl from '../baseUrl';
+import moment from 'moment';
 
-const columns: GridColDef[] = [
-  // { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'matricule',
-    // headerName: 'Nom',
-    width: 150,
-    editable: true,
-    align: 'center', flex: 10, headerAlign: 'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Matricule '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  {
-    field: 'entree',
-    // headerName: 'Etat',
-    width: 150,
-    editable: true,
-    align: 'center', flex: 10, headerAlign: 'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Entrée '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  {
-    field: 'sortie',
-    // headerName: 'Etat',
-    width: 150,
-    editable: true,
-    align: 'center', flex: 10, headerAlign: 'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Sortie '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  {
-    field: 'site',
-    // headerName: 'Etat',
-    width: 150,
-    editable: true,
-    align: 'center', flex: 10, headerAlign: 'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Site '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  //   {
-  //       field: 'action',
-  //       headerName: 'Actions',
-  //       width: 150,
-  //       sortable: false,
-  //       renderCell: (params) => (
-  //         <div>      
-  //           <IconButton 
-  //           // onClick={()=> enableUser(params.id)}
-  //           >
-  //             <EditOutlined sx={{ color: 'red' }} />
-  //           </IconButton>
-  //         </div>
-  //       ),
-  //     },
 
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params: GridValueGetterParams) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
-];
 
-const rows = [
-  { id: 1, matricule: 'M14555', entree: 'Jon', sortie: 'Jon', site: 'Fann Hock' },
-  { id: 2,matricule: 'M14576', entree: 'Jon', sortie: 'Jon', site: 'Medina' },
-  { id: 3, matricule: 'M14525', entree: 'Jon', sortie: 'Jon', site: 'Fann Hock' },
-  { id: 4, matricule: 'M14522', entree: 'Jon', sortie: 'Jon', site: 'Grand Dakar' },
-  { id: 5,matricule: 'M14730', entree: 'Jon', sortie: 'Jon', site: 'Fann Hock' },
-  { id: 6, matricule: 'M14734', entree: 'Jon', sortie: 'Jon', site: 'Medina' },
-  { id: 7, matricule: 'M14700', entree: 'Jon', sortie: 'Jon', site: 'Grand Dakar' },
-  { id: 8, matricule: 'M14733', entree: 'Jon', sortie: 'Jon', site: 'Medina' },
-  { id: 9, matricule: 'M14701', entree: 'Jon', sortie: 'Jon', site: 'Grand Dakar' },
-  { id: 10, matricule: 'M13874', entree: 'Jon', sortie: 'Jon', site: 'Medina' },
-  { id: 11, matricule: 'M13274', entree: 'Jon', sortie: 'Jon', site: 'Fann Hock' },
-  //   { id: 7, nom: 'Clifford', etat: 'Ferrara' },
-  //   { id: 8, nom: 'Frances', etat: 'Rossini' },
-  //   { id: 9, nom: 'Roxie', etat: 'Harvey' },
-];
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -146,22 +46,215 @@ function a11yProps(index: number) {
 export default function HistoriqueTab() {
 
 
+  const [station, setStation] = useState("" as any)
+  const [user, setUser] = useState("" as any);
+  
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    
+    baseUrl.get('/getParking',{headers: {Authorization : token}}).then((res:any) => {
+      // console.log(res.data);
+      setStation(res.data)
+    })
+    baseUrl.get('/getAll',{headers: {Authorization : token}}).then((res:any) => {
+      // console.log(res.data);
+      setUser(res.data)
+    })
+    console.log(station);
+    
+
+    // tabStation();
+  }, [])
+
+ 
+  const tabStation =()=>{
+
+    const newTabs = [...station];
+    console.log(station);
+    
+    for (const iterator1 of station) {
+      for (const iterator2 of user) {
+        if(iterator1.user === iterator1._id){
+          
+          // newTabs[1].items.push(pickedItem);
+        }
+        // setTabs(newTabs);
+        // setstationTab(...[{ matricule: iterator1?.matricule, entrer: iterator1.entrer, sortie: iterator1.sortie, site: iterator1.place, dateEntrer: iterator1.dateEntrer, dateSortie:iterator1.dateSortie }])
+      }
+    }
+  }
+
+  // console.log("test :", stationTa);
+  
+
+  const columns: GridColDef[] = [
+    // { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'user',
+      // headerName: 'Nom',
+      width: 70,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Matricule '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'entrer',
+      // headerName: 'Etat',
+      width: 40,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Entrée '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>      
+          {
+          params?.row?.sortie ==="1" ? <Chip variant='filled' color='success' label="Oui"/>
+          : <Chip variant='outlined' color='error' label="Non" />
+          }   
+        </>
+      ),
+    },
+    {
+      field: 'sortie',
+      // headerName: 'Etat',
+      width: 40,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Sortie '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>        
+          {
+          params?.row?.sortie ==="1" ? <Chip variant='filled' color='success' label="Oui"/>
+          : <Chip variant='outlined' color='error' label="Non" />
+          }   
+        </>
+      ),
+    },
+    {
+      field: 'place',
+      // headerName: 'Etat',
+      width: 120,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Site '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'dateEntrer',
+      // headerName: 'Etat',
+      width: 180,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Date entrée '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>      
+          {moment(params?.row?.dateEntrer).format('LL')}
+        </>
+      ),
+    },
+    {
+      field: 'dateSortie',
+      // headerName: 'Etat',
+      width: 180,
+      editable: true,
+      align: 'center', flex: 10, headerAlign: 'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Date sortie '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>      
+          
+          {moment(params?.row?.dateSortie).format('LL')}
+        </>
+      ),
+    },
+    //   {
+    //       field: 'action',
+    //       headerName: 'Actions',
+    //       width: 150,
+    //       sortable: false,
+    //       renderCell: (params) => (
+    //         <div>      
+    //           <IconButton 
+    //           // onClick={()=> enableUser(params.id)}
+    //           >
+    //             <EditOutlined sx={{ color: 'red' }} />
+    //           </IconButton>
+    //         </div>
+    //       ),
+    //     },
+  
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
+  ];
+
+
 
   return (
     
-    <Box sx={{ width: '80%', m: '0 auto', bgcolor: '#fff',p:1 }}>
+    <Box sx={{ width: '90%', m: '0 auto', bgcolor: '#fff',p:1 }}>
       <Typography variant='h5' sx={{p:1, boxShadow: 1, fontWeight: "bold", }} align='center'>HISTORIQUE STATIONNEMENT</Typography>
       &nbsp;
 
 
       <DataGrid
-        rows={rows}
+        rows={station}
         columns={columns}
+        getRowId={(station) => station._id}
         initialState={{
           pagination: {
             paginationModel: {
               pageSize: 5,
             },
+          },
+          sorting: {
+            sortModel: [{ field: 'dateEntrer', sort: 'asc' }],
           },
         }}
         pageSizeOptions={[5]}

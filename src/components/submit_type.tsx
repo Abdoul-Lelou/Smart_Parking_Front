@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
 import { IconButton, Tab, Tabs, Typography } from '@mui/material';
 import { EditOutlined } from '@mui/icons-material';
+import { useState } from 'react';
+import baseUrl from '../baseUrl';
 
 const columns: GridColDef[] = [
   // { field: 'id', headerName: 'ID', width: 90 },
@@ -121,6 +123,34 @@ export default function Abonnement_component() {
 
 
   const [value, setValue] = React.useState(0);
+  const [abonnementMois, setabonnementMois] = useState("" as any)
+  const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
+
+
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    console.log("res.data");
+    
+    baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
+      let tab1 = []
+      let tab2 = [];
+      for (const iterator of res.data) {
+        if(iterator.typeAbonnement =="mois"){
+
+          tab1.push(iterator)
+          console.log("tab1: ....",tab1);
+          setabonnementMois(tab1)
+        }else if(iterator.typeAbonnement =="semaine"){
+          tab2.push(iterator)
+          console.log("tab2: ....",tab2);
+          setabonnementSemaine(tab2)
+        }
+        
+      }
+      
+    })
+  }, [])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
@@ -142,7 +172,8 @@ export default function Abonnement_component() {
             <TabPanel value={value} index={0}>
 
             <DataGrid
-                rows={rows}
+                rows={abonnementMois}
+                getRowId={(abonnementMois) => abonnementMois._id}
                 columns={columns}
                 initialState={{
                   pagination: {
@@ -163,7 +194,8 @@ export default function Abonnement_component() {
             <TabPanel value={value} index={1}>
 
             <DataGrid
-                rows={rows}
+                rows={abonnementSemaine}
+                getRowId={(abonnementSemaine) => abonnementSemaine._id}
                 columns={columns}
                 initialState={{
                   pagination: {

@@ -8,6 +8,9 @@ import { IconButton } from '@mui/joy';
 import SemaineArchive from './semaine_archive';
 import { Chip } from '@mui/material';
 import { Delete, Done } from '@mui/icons-material';
+import { useState } from 'react';
+import baseUrl from '../baseUrl';
+import moment from 'moment';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,7 +20,29 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function BasicGrid() {
+export default function SemaneAbonnement() {
+
+  const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
+
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    console.log("res.data");
+    
+    baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
+      let tab = []
+      for (const iterator of res.data) {
+        if(iterator.typeAbonnement =="semaine"){
+
+          tab.push(iterator)
+          console.log(tab);
+          setabonnementSemaine(tab)
+        }
+        
+      }
+      
+    })
+  }, [])
 
   const columns: GridColDef[] = [
     // { field: 'id', headerName: 'ID', width: 90 },
@@ -80,6 +105,11 @@ export default function BasicGrid() {
             </span> */}
         </strong>
       ),
+      renderCell: (params) => (
+        <>      
+          {moment(params.row.dateInscrit).format('ll')}
+        </>
+      ),
     },
     {
         field: 'action',
@@ -128,7 +158,8 @@ export default function BasicGrid() {
             </Item>
           <Item sx={{mt:1,boxShadow:5}}>
           <DataGrid
-                rows={rows}
+                rows={abonnementSemaine}
+                getRowId={(abonnementSemaine) => abonnementSemaine._id}
                 columns={columns}
                 initialState={{
                   pagination: {

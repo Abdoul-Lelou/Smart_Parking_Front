@@ -8,9 +8,10 @@ import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
 import './inscription.css'
 import { useState } from 'react';
-import { CircularProgress, MenuItem } from '@mui/material';
+import { CircularProgress, MenuItem, useStepContext } from '@mui/material';
 import ShowBackdrop from '../../components/backdrop';
 import baseUrl from '../../baseUrl';
+import { ToastContainer, toast } from 'react-toastify';
 // import { ToastContainer, toast } from 'react-toastify';
 // import baseUrl from '../../baseUrl'
 
@@ -28,6 +29,9 @@ export default function Inscription() {
     const [carte, setcarte] = useState('' as any);
     const [abonnement, setabonnement] = useState('' as any);
     const [code, setcode] = useState('' as any);
+    const [successStatus, setsuccessStatus] = useState(false)
+    const [errorStatus, seterrorStatus] = useState(false)
+
 
 
     const [loader, setloader] = useState(false);
@@ -51,6 +55,8 @@ export default function Inscription() {
         e.preventDefault();
         // Connexion(email,password)
     }
+
+    
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -87,45 +93,30 @@ export default function Inscription() {
             const data = user
         
             baseUrl.post("/post", data, config).then((res:any) => {
-              console.log(res.data);
+              console.log(res.data.includes("Utilisateur ajouté"));
               
-            //   if(res.data =="Utilisateur ajouté"){
-            //     setsuccessStatus(true);
-            //     // setNom('');setPrenom('');setEmail('');setPassword('');setPassword2('');setRole('')
-            //     setTimeout(() => {
-            //     setsuccessStatus(false);
-            //     window.location.reload();  
-            //     }, 2000);
-            //     // vérification si l'email existe déjà
-            //   }else if(res.data.code =="auth/email-already-in-use"){
-            //     seterrorStatus(true);
-            //     setmsgerror("Email existe déjà")
-            //     setTimeout(() => {
-            //       seterrorStatus(false);  
-            //     }, 3000);
-            //   }
-            //   // vérification du format email
-            //   else if(res.data.code =="auth/invalid-email"){
-            //     seterrorStatus(true);
-            //     setmsgerror("Email invalide")
-            //     setTimeout(() => {
-            //       seterrorStatus(false);  
-            //     }, 3000);
-            //   }
+              if(res.data.includes("Utilisateur ajouté")){
+                // notify();
+                // vérification si l'email existe déjà
+                setsuccessStatus(true);
+                setTimeout(() => {
+                    setsuccessStatus(false);  
+                }, 2000);
+              }
             }).catch((error:any) =>{
-                console.log(error);
+                //console.log(error);
                 
-                // seterrorStatus(true);
-                // setTimeout(() => {
-                //   seterrorStatus(false);  
-                // }, 2000);
+                seterrorStatus(true);
+                setTimeout(() => {
+                  seterrorStatus(false);  
+                }, 2000);
             })
         
     }
 
     return (
         <>
-            {/* <ThemeProvider theme={theme}> */}
+            
                 {loading ?
                     <ShowBackdrop/>
                 :
@@ -146,34 +137,9 @@ export default function Inscription() {
                         }}
                     >
                         <CssBaseline />
-                        {/* <Grid
-                            item
-                            xs={false}
-                            sm={12}
-                            md={12}
-
-                        > */}
-
-
-                            {/* <Box
-                                sx={{
-                                    // my: 8,
-                                    // mx: 0,
-                                    // m:10,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    // border: "1px solid red",
-                                    // height: "100%",
-
-                                    // maxWidth: "100%", 
-                                    p: 8, background: "#EFF2F8"
-                                }}
-                            > */}
-
-
-
-                                {/* <Box component="form" noValidate sx={{ maxWidth: "100%", boxShadow: 5, background: "#fff" }}> */}
+                            {successStatus && <Typography sx={{m:"auto",fontSize:'22px', color:"green"}}>Utilisateur Ajouté</Typography> }
+                            {errorStatus && <Typography sx={{m:"auto",fontSize:'15px', color:"red"}}>Une erreur s'est produit</Typography> }
+                            
                                 {
                                     !suivant && <Grid sx={{borderRadius:2, minHeight: "55vh", display: 'flex', p: 2, justifyContent: 'center', flexWrap: 'wrap', background: "#fff", boxShadow: 4 }}>
                                         <Typography variant='h6' align='center' sx={{ width: "70%" }}>
@@ -304,30 +270,7 @@ export default function Inscription() {
 
                                         </TextField>
 
-                                        {/* <TextField
-                                            // id="filled-select-currency-native"
-                                            select
-                                            label="Type d'abonnement"
-                                            // defaultValue="EUR"
-                                            SelectProps={{
-                                                native: true,
-                                            }}
-                                            size='small'
-                                            // helperText="Please select your currency"
-                                            // variant="filled"
-                                            onChange={(e) => {setabonnement(e.target.value); console.log(abonnement);
-                                            }}
-                                            sx={{ backgroundColor: 'white', m: 1, width: '30ch' }}
-                                            >
-                                            
-                                                <option value="mois">
-                                                    Mois
-                                                </option>
-                                                <option value="semaine">
-                                                    Semaine
-                                                </option>
                                         
-                                            </TextField> */}
 
                                         <TextField
                                             margin="normal"
@@ -407,19 +350,9 @@ export default function Inscription() {
                                     </Grid>
                                 }
 
-                                {/* </Box> */}
-
-
-                            {/* </Box> */}
-
-
-
-
-                        {/* </Grid> */}
                     </Grid>
                 }
 
-            {/* </ThemeProvider> */}
 
 
 

@@ -6,8 +6,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { Tabs } from '@mui/material';
+import baseUrl from '../baseUrl';
+import { useState } from 'react';
+import moment from 'moment';
 
 
 // import  from 'infinite-scroll';
@@ -16,6 +18,48 @@ import { Tabs } from '@mui/material';
 export default function MoisArchive() {
   const [value, setValue] = React.useState(0);
 
+  const [abonnementArchive, setabonnementArchive] = useState("" as any)
+
+  let token = window.localStorage.getItem('token')
+  React.useEffect(() => {
+   
+    console.log("res.data");
+    
+    baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
+      let tab = []
+      for (const iterator of res.data) {
+        if(iterator.typeAbonnement =="mois"){
+        
+          let date = moment(iterator.dateInscit).format('YYYY-MM-DD');
+          // console.log(moment(iterator.dateInscit).format('YYYY-MM-DD') == "2023-03-11");
+          
+          const pastTime = new Date('2000-08-22');
+          const now = new Date();
+
+          const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+
+          const timeDiffInMs = now.getTime() - pastTime.getTime();
+
+          // if(timeDiffInMs >= thirtyDaysInMs){
+          //     console.log('Date is older than 30 days');
+          // }else{
+          //     console.log('Date is not older than 30 days');
+          // }
+          
+
+
+
+
+          tab.push(iterator)
+          console.log(moment(iterator.dateInscit,'+++', iterator.nom));
+          setabonnementArchive(tab)
+        }
+        
+      }
+      
+    })
+  }, [])
+  
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };

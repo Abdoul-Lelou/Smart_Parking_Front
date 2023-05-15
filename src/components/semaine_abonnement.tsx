@@ -23,25 +23,37 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function SemaneAbonnement() {
 
   const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
+  const [abonnements, setabonnements] = useState("" as any)
+
 
   let token = window.localStorage.getItem('token')
+  const userRole = localStorage.getItem('role')?.split(' ').join('')
+  const uid = localStorage.getItem('uid')?.split(' ').join('')
+
   React.useEffect(() => {
    
     console.log("res.data");
     
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
-      let tab = []
+      let tab = []; let tabUser = [];
       for (const iterator of res.data) {
         if(iterator.typeAbonnement =="semaine"){
 
           tab.push(iterator)
           console.log(tab);
           setabonnementSemaine(tab)
+        }else if(userRole ==="user"){
+          if (iterator._id === uid) {
+            tabUser.push(iterator);
+            setabonnements(tabUser)
+          }
         }
         
       }
       
     })
+
+
   }, [])
 
   const columns: GridColDef[] = [
@@ -136,28 +148,101 @@ export default function SemaneAbonnement() {
         ),
       },
   ];
-  
-  const rows = [
-    { id: 1, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 2, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 3, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 4, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 5, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 6, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 7, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 8, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
-    { id: 9, prenom: 'Richard',  nom: 'Snow', matricule: 'M58dds', inscription: "25 mars 2023" },
+
+  const columnsUser: GridColDef[] = [
+    // { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'prenom',
+      // headerName: 'Email',
+      width: 80,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Prénom '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'nom',
+      // headerName: 'Email',
+      width: 80,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Nom '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'matricule',
+      // headerName: 'Matricule',
+      width: 80,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Matricule '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'inscription',
+      // headerName: 'Matricule',
+      width: 100,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Inscription '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>      
+          {moment(params.row.dateInscrit).format('ll')}
+        </>
+      ),
+    },
+    {
+        field: 'typeAbonnement',
+        width: 150,
+        sortable: false,
+        renderHeader: () => (
+          <strong>
+            {'Abonnement '}
+              {/* <span role="img" aria-label="enjoy">
+                🎂
+              </span> */}
+          </strong>
+        ),
+      },
   ];
+  
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} mt={1} sx={{width:'80%', m:"auto"}}>
-        <Grid item xs={8}>
+        
+        {userRole !=="user" && <Grid item xs={8}>
           <Item sx={{boxShadow:5}}>
             <Chip label="ABONNEMENT EN COURS" color='success' deleteIcon={<Done />}/>
             </Item>
           <Item sx={{mt:1,boxShadow:5}}>
-          <DataGrid
+          {userRole !=="user" &&<DataGrid
                 rows={abonnementSemaine}
                 getRowId={(abonnementSemaine) => abonnementSemaine._id}
                 columns={columns}
@@ -174,10 +259,74 @@ export default function SemaneAbonnement() {
                 sx={{
                   boxShadow:3
                 }}
-            />
+            />}
+
+            {userRole ==="user" &&<DataGrid
+                rows={abonnements}
+                getRowId={(abonnements) => abonnements._id}
+                columns={columnsUser}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                pageSizeOptions={[5]}
+                disableRowSelectionOnClick
+                sx={{
+                  boxShadow:3
+                }}
+            />}
           </Item>
-        </Grid>
-        <Grid item xs={4}>
+        </Grid>}
+
+        {userRole ==="user" && 
+        <Grid item xs={12}>
+          <Item sx={{boxShadow:5}}>
+            <Chip label="ABONNEMENT EN COURS" color='success' deleteIcon={<Done />}/>
+            </Item>
+          <Item sx={{mt:1,boxShadow:5}}>
+          {userRole !=="user" &&<DataGrid
+                rows={abonnementSemaine}
+                getRowId={(abonnementSemaine) => abonnementSemaine._id}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                pageSizeOptions={[5]}
+                // checkboxSelection
+                disableRowSelectionOnClick
+                sx={{
+                  boxShadow:3
+                }}
+            />}
+
+            {userRole ==="user" &&<DataGrid
+                rows={abonnements}
+                getRowId={(abonnements) => abonnements._id}
+                columns={columnsUser}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                pageSizeOptions={[5]}
+                disableRowSelectionOnClick
+                sx={{
+                  boxShadow:3
+                }}
+            />}
+          </Item>
+        </Grid>}
+
+        {userRole !=="user" && <Grid item xs={4}>
           <Item sx={{boxShadow:5}}>
             <Chip label="ABONNEMENT EXPIRÉ" color='error' deleteIcon={<Delete />}/>
           </Item>
@@ -185,7 +334,7 @@ export default function SemaneAbonnement() {
             <SemaineArchive />
           </Item>
 
-        </Grid>
+        </Grid>}
       </Grid>
     </Box>
   );

@@ -23,36 +23,23 @@ export default function MoisArchive() {
   let token = window.localStorage.getItem('token')
   React.useEffect(() => {
    
-    console.log("res.data");
     
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab = []
       for (const iterator of res.data) {
         if(iterator.typeAbonnement =="mois"){
         
-          let date = moment(iterator.dateInscit).format('YYYY-MM-DD');
-          // console.log(moment(iterator.dateInscit).format('YYYY-MM-DD') == "2023-03-11");
+          let date = moment(iterator.dateInscrit).format('YYYY-MM-DD');
           
-          const pastTime = new Date('2000-08-22');
-          const now = new Date();
+          const date1 = new Date(date).getTime(); // replace with your first date
+          const date2 = new Date().getTime(); // replace with your second date (or use a specific date)
 
-          const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+          const oneMonthInMillis = 1000 * 60 * 60 * 24 * 30;
 
-          const timeDiffInMs = now.getTime() - pastTime.getTime();
-
-          // if(timeDiffInMs >= thirtyDaysInMs){
-          //     console.log('Date is older than 30 days');
-          // }else{
-          //     console.log('Date is not older than 30 days');
-          // }
-          
-
-
-
-
-          tab.push(iterator)
-          console.log(moment(iterator.dateInscit,'+++', iterator.nom));
-          setabonnementArchive(tab)
+          if (date2 - date1 > oneMonthInMillis) {
+            tab.push(iterator)
+            setabonnementArchive(tab)
+          }
         }
         
       }
@@ -96,7 +83,40 @@ export default function MoisArchive() {
   
     >
       <List id="list" sx={{ width: '100%',maxWidth: 360,height:300, bgcolor: 'background.paper' }}>
-        <ListItem alignItems="flex-start">
+
+        {
+          abonnementArchive && abonnementArchive.map((val:any)=>{
+            return(
+              <>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt={val.prenom} src="/static/images/avatar/1.jpg" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={val.prenom+" "+ val.nom}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {val.matricule}
+                        </Typography>
+                        &nbsp;
+                         {moment().startOf(val.dateInscrit).fromNow() }
+                        {/* {" — I'll be in your neighborhood doing errands this…"} */}
+                      </React.Fragment>
+                    }
+                  />
+                  <Divider variant="inset" component="li" />
+                </ListItem>
+              </>
+            )
+          })
+        }
+        {/* <ListItem alignItems="flex-start">
           <ListItemAvatar>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
           </ListItemAvatar>
@@ -204,7 +224,7 @@ export default function MoisArchive() {
               </React.Fragment>
             }
           />
-        </ListItem>
+        </ListItem> */}
       </List>
     </Tabs>
     </>

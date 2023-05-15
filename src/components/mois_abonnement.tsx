@@ -26,7 +26,7 @@ export default function MoisAbonnement() {
   let token = window.localStorage.getItem('token')
   React.useEffect(() => {
    
-    console.log("res.data");
+   
     
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab = []
@@ -34,7 +34,7 @@ export default function MoisAbonnement() {
         if(iterator.typeAbonnement =="mois"){
 
           tab.push(iterator)
-          console.log(tab);
+         
           setabonnementMois(tab)
         }
         

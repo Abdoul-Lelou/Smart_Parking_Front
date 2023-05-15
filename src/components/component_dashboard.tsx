@@ -19,7 +19,7 @@ const Item = styled(Sheet)(({ theme }) => ({
 
 export default function Dashboard_component() {
 
-  let tmp = false;
+  const userRole = localStorage.getItem('role')?.split(' ').join('')
 
   React.useEffect(() => {
    
@@ -37,44 +37,66 @@ export default function Dashboard_component() {
       //   sx={{ width: '100%' }}
       >
           <Grid xs={4} spacing={4}>
-            {/* <Item> */}
-                  <Grid  
-                        sx={{ 
-                            boxShadow:5, 
-                            display:'block', 
-                            justifyContent:"center"
-                        }}
-                    >
-                        <Card_dashboard/>
-                  </Grid>
-                  <Grid  
-                        sx={{
-                            boxShadow:5, 
-                            display:'block', 
-                            justifyContent:"center",
-                            mt:8.5
-                        }}
-                    >
-                        <Card_place />
-                  </Grid>
-                  <Grid  
-                        sx={{
-                            boxShadow:5, 
-                            display:'block', 
-                            justifyContent:"center",
-                            mt:8.5
-                        }}
-                    >
-                        <Card_systeme />
+            
+                {userRole ==="user" && <Grid  
+                      sx={{ 
+                          boxShadow:5, 
+                          display:'block', 
+                          justifyContent:"center",
+                          mt:8
+                      }}
+                  >
+                      <Card_dashboard />
+                </Grid>}
 
-                  </Grid>
-            {/* </Item> */}
+                {userRole !=="user" && <Grid  
+                      sx={{ 
+                          boxShadow:5, 
+                          display:'block', 
+                          justifyContent:"center"
+                      }}
+                  >
+                      <Card_dashboard />
+                </Grid>}
+
+                {userRole ==="user" && <Grid  
+                      sx={{
+                          boxShadow:5, 
+                          display:'block', 
+                          justifyContent:"center",
+                          mt:10
+                      }}
+                  >
+                      <Card_place />
+                </Grid>}
+
+                {userRole !=="user" && <Grid  
+                      sx={{
+                          boxShadow:5, 
+                          display:'block', 
+                          justifyContent:"center",
+                          mt:8.5
+                      }}
+                  >
+                      <Card_place />
+                </Grid>}
+
+                {userRole !=="user" && <Grid  
+                      sx={{
+                          boxShadow:5, 
+                          display:'block', 
+                          justifyContent:"center",
+                          mt:8.5
+                      }}
+                  >
+                      <Card_systeme />
+
+                </Grid>}
+          
           </Grid>
           <Grid xs={7.5} sx={{ boxShadow:5}}>
-            {/* <Item> */}
             <iframe  src="https://embed.waze.com/fr/iframe?zoom=12&lat=14.7645042&lon=-17.3660286"
                     width="100%" height="360"  style={{ border: 0 }}></iframe>
-            {/* </Item> */}
             &nbsp;
             <Card_historique />
           </Grid>

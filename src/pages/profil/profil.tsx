@@ -78,19 +78,19 @@ export default function Profil() {
                             <Typography variant='h3' component='h3' align='center' sx={{ m: 'auto' }}>Profil</Typography>
                             <MenuList sx={{ width: '60%', m: "auto" }}>
                                 <MenuItem  sx={{p:1, display: 'flex', justifyContent: 'center' }}>
-                                    Nom : Andre
+                                    Nom : {localStorage.getItem('nom')}
                                 </MenuItem>
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
-                                    Prenom : Merlin
+                                    Prenom : {localStorage.getItem('prenom')}
                                 </MenuItem>
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
-                                    Matricule : Lts00041
+                                    Matricule : {localStorage.getItem('matricule')}
                                 </MenuItem>
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
-                                    Email : merlin@gmail.com
+                                    Email : {localStorage.getItem('email')}
                                 </MenuItem>
                                 <MenuItem sx={{ p:1,display: 'flex', justifyContent: 'center' }}>
-                                    Tel : 77 123 45 67
+                                    Tel : {localStorage.getItem('tel')}
                                 </MenuItem>
                                 <Divider />
                 

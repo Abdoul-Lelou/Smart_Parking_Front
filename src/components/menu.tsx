@@ -40,8 +40,9 @@ export default function MenuDashboard() {
   const linkStyle = {
     textDecoration: 'none'
   };
-
-
+  const userRole = localStorage.getItem('role')?.split(' ').join('')
+  const userNom = localStorage.getItem('nom')?.split(' ').join('')
+  const userPrenom = localStorage.getItem('prenom')?.split(' ').join('')
 
 
   return (  
@@ -50,7 +51,7 @@ export default function MenuDashboard() {
       {!fullScreen && <Box sx={{ py: 1, pr: 4,ml:1, mb:1, maxHeight:"80%", maxWidth: '85%',  }}>
 
           <Typography alignItems='center'> 
-              <Avatar sx={{m:'0 auto', p:6}}>AB</Avatar>
+              <Avatar sx={{m:'0 auto', p:6}} alt={userPrenom} src='' />
           </Typography>
           <Typography
               align='center'
@@ -58,9 +59,10 @@ export default function MenuDashboard() {
                   p:2,
                  
               }}
+              textTransform='capitalize'
               // level='body1'
           > 
-              Abdoul Diallo
+              {userPrenom} {userNom}
           </Typography>
         <Divider />
         <List
@@ -119,7 +121,7 @@ export default function MenuDashboard() {
             </Link>
           </ListItem>
 
-          <ListItem >
+          {userRole !=="user" && <ListItem >
           <Link to="/abonnement" style={linkStyle} onClick={()=> setIndex(2)}>
             <ListItemButton
               selected={index === 2}
@@ -133,9 +135,9 @@ export default function MenuDashboard() {
               <ListItemContent>Abonnements</ListItemContent>
             </ListItemButton>
             </Link>
-          </ListItem>
+          </ListItem>}
 
-          <ListItem >
+          {userRole !=="user" && <ListItem >
           <Link to="/systeme" style={linkStyle} onClick={()=> setIndex(3)}>
             <ListItemButton
               selected={index === 3}
@@ -149,10 +151,9 @@ export default function MenuDashboard() {
               <ListItemContent>Systeme</ListItemContent>
             </ListItemButton>
             </Link>
-          </ListItem>
+          </ListItem>}
           
-          <ListItem >
-          {/* <Link to="/user" style={linkStyle} onClick={()=> {setIndex(4) handleClick()}}> */}
+          {userRole !=="user" &&<ListItem >
             <ListItemButton
               selected={index === 4}
               variant={index === 4 ? 'soft' : 'plain'}
@@ -219,7 +220,8 @@ export default function MenuDashboard() {
         
             </Menu>
       
-          </ListItem>
+          </ListItem>}
+
           <ListItem >
           <Link to="/profil" style={linkStyle} onClick={()=> setIndex(5)}>
             <ListItemButton

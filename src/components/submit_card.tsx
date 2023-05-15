@@ -41,9 +41,10 @@ export default function Card_dashboard() {
   const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
 
   let token = window.localStorage.getItem('token')
+  const userRole = localStorage.getItem('role')?.split(' ').join('')
   React.useEffect(() => {
    
-    console.log("res.data");
+  
     
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab1 = [];
@@ -52,11 +53,11 @@ export default function Card_dashboard() {
         if(iterator.typeAbonnement =="mois"){
 
           tab1.push(iterator)
-          console.log(tab1);
+         
           setabonnementMois(tab1)
         }else{
           tab2.push(iterator)
-          console.log(tab2);
+          
           setabonnementSemaine(tab2)
         }
         
@@ -83,7 +84,8 @@ export default function Card_dashboard() {
 
   return (
     <>
-     <Card variant="outlined" sx={{ maxWidth: '80%', border:"1px solid", m:'0 auto' }}>
+     {userRole !=="user" && 
+      <Card variant="outlined" sx={{ maxWidth: '80%', border:"1px solid", m:'0 auto' }}>
       <CardOverflow>
         <AspectRatio ratio="8" >
           {/* <img
@@ -123,7 +125,40 @@ export default function Card_dashboard() {
             <Chip icon={<CalendarMonthIcon />} label="mois" color='info' clickable/>
         </Typography>
       </CardOverflow>
+     </Card>}
+
+     {userRole ==="user" && 
+      <Card variant="outlined" sx={{ maxWidth: '80%', border:"1px solid", m:'0 auto' }}>
+      <CardOverflow>
+        <AspectRatio ratio="8" >
+            <Typography level="h2" sx={{ fontSize: 'md', mt: 14,background: "#1EC79B" }}>
+                Abonnements
+            </Typography>
+        </AspectRatio>
+      </CardOverflow>
+      <Divider />
+      <CardOverflow
+        variant="soft"
+        sx={{
+          display: 'flex',
+          gap: 1.5,
+          py: 1.5,
+          px: 'var(--Card-padding)',
+          bgcolor: 'background.level1',
+          boxShadow:20,
+          justifyContent:"center"
+        }}
+      >
+        <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary'  }} onClick={()=>openDialog1()}>
+            <Chip icon={<EventIcon />} label="Mes abonnements" color='error' clickable/>
+        </Typography>
+        {/* <Divider orientation="vertical" /> */}
+        {/* <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }} onClick={()=>openDialog2()}>
+            <Chip icon={<CalendarMonthIcon />} label="mois" color='info' clickable/>
+        </Typography> */}
+      </CardOverflow>
      </Card>
+     }
      <div>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open full-screen dialog
@@ -145,12 +180,15 @@ export default function Card_dashboard() {
               <GridCloseIcon />
             </IconButton>
            
-            <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
+            {userRole !=="user" && <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
               ABONNEMENT PAR SEMAINE
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            </Typography>}
+            {userRole ==="user" && <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
+              ABONNEMENT PERSONEL
+            </Typography>}
+            {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
         

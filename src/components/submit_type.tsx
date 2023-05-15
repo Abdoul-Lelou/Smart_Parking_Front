@@ -1,77 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
-import { IconButton, Tab, Tabs, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { EditOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import baseUrl from '../baseUrl';
 
-const columns: GridColDef[] = [
-  // { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'email',
-    // headerName: 'Email',
-    width: 100,
-    editable: true,
-    align:'center', flex:10, headerAlign:'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Email '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  {
-    field: 'matricule',
-    // headerName: 'Matricule',
-    width: 100,
-    editable: true,
-    align:'center', flex:10, headerAlign:'center',
-    renderHeader: (params: GridColumnHeaderParams) => (
-      <strong>
-        {'Matricule '}
-          {/* <span role="img" aria-label="enjoy">
-            🎂
-          </span> */}
-      </strong>
-    ),
-  },
-  {
-      field: 'action',
-      // headerName: 'Actions',
-      width: 150,
-      sortable: false,
-      renderCell: (params) => (
-        <div>      
-          <IconButton 
-          // onClick={()=> enableUser(params.id)}
-          >
-            <EditOutlined sx={{ color: 'red' }} />
-          </IconButton>
-        </div>
-      ),
-      renderHeader: (params: GridColumnHeaderParams) => (
-        <strong>
-          {'Action '}
-            {/* <span role="img" aria-label="enjoy">
-              🎂
-            </span> */}
-        </strong>
-      ),
-    },
 
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params: GridValueGetterParams) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
-];
 
 const rows = [
   { id: 1, email: 'Snow', matricule: 'Jon', age: 35 },
@@ -121,7 +56,9 @@ function a11yProps(index: number) {
 
 export default function Abonnement_component() {
 
+  const [open, setOpen] = React.useState(false);
 
+  
   const [value, setValue] = React.useState(0);
   const [abonnementMois, setabonnementMois] = useState("" as any)
   const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
@@ -129,8 +66,6 @@ export default function Abonnement_component() {
 
   let token = window.localStorage.getItem('token')
   React.useEffect(() => {
-   
-    console.log("res.data");
     
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab1 = []
@@ -152,69 +87,171 @@ export default function Abonnement_component() {
     })
   }, [])
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
   };
 
+  const columns: GridColDef[] = [
+    // { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'email',
+      // headerName: 'Email',
+      width: 100,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Email '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+      field: 'matricule',
+      // headerName: 'Matricule',
+      width: 100,
+      editable: true,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Matricule '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+    },
+    {
+        field: 'action',
+        // headerName: 'Actions',
+        width: 150,
+        sortable: false,
+        renderCell: (params) => (
+          <div>      
+            <IconButton 
+            onClick={ handleClickOpen }
+            >
+              <EditOutlined sx={{ color: 'red' }} />
+            </IconButton>
+          </div>
+        ),
+        renderHeader: (params: GridColumnHeaderParams) => (
+          <strong>
+            {'Action '}
+              {/* <span role="img" aria-label="enjoy">
+                🎂
+              </span> */}
+          </strong>
+        ),
+      },
+  
+    // {
+    //   field: 'fullName',
+    //   headerName: 'Full name',
+    //   description: 'This column has a value getter and is not sortable.',
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    // },
+  ];
+
   return (
     
+    <>
+      <Box sx={{ width: '80%', m:'0 auto',bgcolor:'#fff', p:1 }}>
+        {/* <Typography variant='h4' sx={{p:1,boxShadow:1, fontWeight:"bold"}} align='center'>TYPE ABONNEMENT</Typography> */}
+              {/* &nbsp; */}
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs value={value} sx={{width:438, m:'0 auto', display:"flex", justifyContent:'center'}} onChange={handleChange} aria-label="basic tabs example">
+                      <Tab label="Abonnement un mois"  {...a11yProps(0)} sx={{borderRight:'1px solid'}}/>
+                      {/* <Divider orientation='vertical'/> */}
+                      <Tab label="Abonnement une semaine"  {...a11yProps(1)} sx={{borderLeft:'1px solid'}} />
+                  </Tabs>
+              </Box>
+              <TabPanel value={value} index={0}>
 
-    <Box sx={{ width: '80%', m:'0 auto',bgcolor:'#fff', p:1 }}>
-      {/* <Typography variant='h4' sx={{p:1,boxShadow:1, fontWeight:"bold"}} align='center'>TYPE ABONNEMENT</Typography> */}
-            {/* &nbsp; */}
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} sx={{width:438, m:'0 auto', display:"flex", justifyContent:'center'}} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Abonnement un mois"  {...a11yProps(0)} sx={{borderRight:'1px solid'}}/>
-                    {/* <Divider orientation='vertical'/> */}
-                    <Tab label="Abonnement une semaine"  {...a11yProps(1)} sx={{borderLeft:'1px solid'}} />
-                </Tabs>
-            </Box>
-            <TabPanel value={value} index={0}>
-
-            <DataGrid
-                rows={abonnementMois}
-                getRowId={(abonnementMois) => abonnementMois._id}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
+              <DataGrid
+                  rows={abonnementMois}
+                  getRowId={(abonnementMois) => abonnementMois._id}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
                     },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                // checkboxSelection
-                disableRowSelectionOnClick
-                sx={{
-                  boxShadow:3
-                }}
-            />
-
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-
-            <DataGrid
-                rows={abonnementSemaine}
-                getRowId={(abonnementSemaine) => abonnementSemaine._id}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
-                    },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                // checkboxSelection
-                disableRowSelectionOnClick
-                sx={{
-                  boxShadow:3
-                }}
+                  }}
+                  pageSizeOptions={[5]}
+                  // checkboxSelection
+                  disableRowSelectionOnClick
+                  sx={{
+                    boxShadow:3
+                  }}
               />
 
-            </TabPanel>
-                    
-    </Box>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
 
+              <DataGrid
+                  rows={abonnementSemaine}
+                  getRowId={(abonnementSemaine) => abonnementSemaine._id}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 5,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[5]}
+                  // checkboxSelection
+                  disableRowSelectionOnClick
+                  sx={{
+                    boxShadow:3
+                  }}
+                />
+
+              </TabPanel>
+                      
+      </Box>
+      <div>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
+        Open form dialog
+      </Button> */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here. We
+            will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+    </>
   );
 }

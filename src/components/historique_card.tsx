@@ -30,6 +30,7 @@ export default function Card_historique() {
   const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
   const [fullWidth, setFullWidth] = React.useState(true);
 
+  const userRole = localStorage.getItem('role')?.split(' ').join('')
 
   const openDialog = () => {
     setopen(true);
@@ -48,7 +49,6 @@ export default function Card_historique() {
           <AspectRatio ratio="8">
               <Typography level="h2" sx={{ fontSize: 'md', mt: 14,background:"#758480" }}>
                   Stationnements
-                  {/* {...title1} */}
               </Typography>
           </AspectRatio>
         </CardOverflow>
@@ -69,22 +69,28 @@ export default function Card_historique() {
         >
           <Typography level="body3" sx={{ fontWeight: 'md', color: 'text.secondary' }}>
             
-            <Chip 
+           {userRole !=="user" && <Chip 
               icon={<WorkHistoryIcon />} 
               label="Historique" 
               color='info' 
               clickable 
               onClick={() => openDialog()}
-              />
+              />}
+
+            {userRole ==="user" && <Chip 
+              icon={<WorkHistoryIcon />} 
+              label="Mon historique" 
+              color='info' 
+              clickable 
+              onClick={() => openDialog()}
+              />}
           </Typography>
         
         </CardOverflow>
       </Card>
 
       <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open full-screen dialog
-      </Button> */}
+      
       <Dialog
         fullWidth={fullWidth}
         maxWidth={maxWidth}
@@ -103,12 +109,7 @@ export default function Card_historique() {
               <Close />
             </IconButton>
            
-            {/* <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
-              HISTORIQUE STATIONNEMENT
-            </Typography> */}
-            {/* <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button> */}
+            
           </Toolbar>
         </AppBar>
         

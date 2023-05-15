@@ -28,6 +28,7 @@ export default function Login() {
     const [loader, setloader] = useState(false);
     const [error, setError] = useState('' as any);
     const [errorMsg, setErrorMsg] = useState(false);
+    const [passlen, setpasslen] = useState(false)
 
 
     const [open, setOpen] = React.useState(false);
@@ -103,26 +104,13 @@ export default function Login() {
     //     Connexion(email,password)
     //   }
     
-    const getApiData = async () => {
-        const response = await fetch(
-        //   "http://127.0.0.1:8000/api/getAll"
-        "http://127.0.0.1:8000/api/getAll/"
-        ).then((response) => console.log(response)).then((e:any)=>{
-            console.log(e);
-            
-        });
-      
-        // update the state
-        console.log(response);
-       
-     
-      };
     
      
 
       const login =  (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        console.log(email, password);
+        alert(email);
+        notifyReset(email);
         // return;
         baseUrl.post('login',{
             email:email,
@@ -136,6 +124,11 @@ export default function Login() {
               localStorage.setItem("token", userReponse?.data?.token)
               localStorage.setItem("email", userReponse?.data?.email)
               localStorage.setItem("uid", userReponse?.data?.userId)
+              localStorage.setItem("nom", userReponse?.data?.nom)
+              localStorage.setItem("prenom", userReponse?.data?.prenom)
+              localStorage.setItem("matricule", userReponse?.data?.matricule)
+              localStorage.setItem("tel", userReponse?.data?.telephone)
+              localStorage.setItem("role", userReponse?.data?.role)
               
               setTimeout(() => window.location.pathname ="dashboard", 1000);
             }else{
@@ -174,9 +167,10 @@ export default function Login() {
                         margin: '0px auto',
                         
                         // boxShadow: 3,
-                        backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center'
+                        backgroundRepeat: 'no-repeat', backgroundSize: 'cover',// backgroundPosition: 'center'
                     }}
                 >
+                    
                     <CssBaseline />
                     <Grid
                         item
@@ -189,19 +183,22 @@ export default function Login() {
 
                         <Box
                             sx={{
-                                my: 10,
-                                mx: 10,
+                                my: 8,
+                                mx: 8,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 // border: "1px solid red",
                                 // height: "100%",
-
+                                boxShadow:4,
                                 maxWidth: "100%", p: 8, background: "#fff"
                             }}
                         >
 
                            {errorMsg && <span style={{color:"red"}}> Email ou mot de passe incorrect</span> }
+                           <Typography color="Background" fontFamily="monospace" fontWeight={10} align='center' sx={{ width: "50%" }}>
+                                CONNEXION
+                            </Typography>
 
                             <Box component="form" noValidate sx={{ maxWidth: "60%", boxShadow: 5, p: 4, background: "#fff" }}>
 
@@ -212,6 +209,7 @@ export default function Login() {
                                         required
                                         fullWidth
                                         id="email"
+                                        helperText={error && <Typography component="em" sx={{color: 'red',fontSize:14}}>{error}</Typography>}
                                         label="Email Address"
                                         name="email"
                                         autoComplete="email"
@@ -223,11 +221,11 @@ export default function Login() {
                                         variant="outlined"
                                     />
                                 </Typography>
-                                    {error && <Typography component="em" sx={{color: 'red',fontSize:14}}>{error}</Typography>}
                                 <Typography  align='center'>
                                     <FormControl sx={{ m: 1, width: '35ch' }} variant="outlined">
                                         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                         <OutlinedInput
+                                    
                                             id="outlined-adornment-password"
                                             type={showPassword ? 'text' : 'password'}
                                             endAdornment={
@@ -243,8 +241,13 @@ export default function Login() {
                                                 </InputAdornment>
                                             }
                                             label="Password"
-                                            onChange={e=> setPassword(e.target.value)}
+                                            onChange={e=> {
+                                                setPassword(e.target.value)
+                                                if(e.target.value.length <4) setpasslen(true)
+                                                else setpasslen(false)
+                                            }}
                                         />
+                                        {passlen && <Typography align='left' component="em" sx={{color: 'red',fontSize:14}}>Au moins quatre caractére</Typography>}
                                     </FormControl>
                                 </Typography>
                                 &nbsp;
@@ -261,7 +264,7 @@ export default function Login() {
                                         }}
                                         // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
                                         sx={{ maxHeight: '50px', maxWidth: '250px', mt: 2 }}
-                                        disabled={!email || !password}
+                                        disabled={!email || !password  || password.length <4}
                                     >
                                         {
                                             !loader ?
@@ -288,17 +291,17 @@ export default function Login() {
 
 
             <ToastContainer 
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+                position="top-right"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
 
         </>
 

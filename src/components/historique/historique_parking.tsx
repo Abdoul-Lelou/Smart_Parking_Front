@@ -9,7 +9,7 @@ const columns: GridColDef[] = [
     field: 'matricule',
     // headerName: 'Nom',
     width: 150,
-    editable: true,
+    editable: false,
     align: 'center', flex: 10, headerAlign: 'center',
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>
@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
     field: 'entree',
     // headerName: 'Etat',
     width: 150,
-    editable: true,
+    editable: false,
     align: 'center', flex: 10, headerAlign: 'center',
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>
@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
     field: 'sortie',
     // headerName: 'Etat',
     width: 150,
-    editable: true,
+    editable: false,
     align: 'center', flex: 10, headerAlign: 'center',
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>
@@ -54,7 +54,7 @@ const columns: GridColDef[] = [
     field: 'site',
     // headerName: 'Etat',
     width: 150,
-    editable: true,
+    editable: false,
     align: 'center', flex: 10, headerAlign: 'center',
     renderHeader: (params: GridColumnHeaderParams) => (
       <strong>

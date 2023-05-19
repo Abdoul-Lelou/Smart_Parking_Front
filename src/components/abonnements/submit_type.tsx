@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, MenuItem, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { EditOutlined } from '@mui/icons-material';
 import { useState } from 'react';
-import baseUrl from '../baseUrl';
+import baseUrl from '../../baseUrl';
 
 
 
@@ -62,6 +62,9 @@ export default function Abonnement_component() {
   const [value, setValue] = React.useState(0);
   const [abonnementMois, setabonnementMois] = useState("" as any)
   const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
+  const [editId, seteditId] = useState("" as any)
+  const [abonnement, setabonnement] = useState("" as any)
+  const [successMsg, setsuccessMsg] = useState(false)
 
 
   let token = window.localStorage.getItem('token')
@@ -85,7 +88,46 @@ export default function Abonnement_component() {
       }
       
     })
-  }, [])
+  }, [successMsg])
+
+  const editAbonnement =(e:any)=>{
+
+    e.preventDefault();
+
+    const user = {"typeAbonnement": abonnement}
+
+
+
+
+    const token = localStorage.getItem('token')
+
+    const config = { headers: { Authorization: token } }
+    const data = user;
+    // console.log(uidedit?.split(' ').join(''));
+    console.log(editId);
+    
+    
+    baseUrl.patch(`/update/${editId}`, data, config).then((res: any) => {
+     
+      if (res.data.includes("result modifier")) {
+       console.log("tout va bien");
+       
+        setsuccessMsg(true);
+        setTimeout(() => {
+          setsuccessMsg(false);
+          handleClose();
+        }, 2000);
+      }
+    }).catch((error: any) => {
+      // console.log(error);
+
+      // seterrorStatus(true);
+      // setTimeout(() => {
+      //   seterrorStatus(false);
+      // }, 2000);
+    })
+    
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -105,7 +147,7 @@ export default function Abonnement_component() {
       field: 'email',
       // headerName: 'Email',
       width: 100,
-      editable: true,
+      editable: false,
       align:'center', flex:10, headerAlign:'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -120,7 +162,7 @@ export default function Abonnement_component() {
       field: 'matricule',
       // headerName: 'Matricule',
       width: 100,
-      editable: true,
+      editable: false,
       align:'center', flex:10, headerAlign:'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -139,7 +181,7 @@ export default function Abonnement_component() {
         renderCell: (params) => (
           <div>      
             <IconButton 
-            onClick={ handleClickOpen }
+            onClick={()=> {handleClickOpen(); seteditId(params?.row?._id)} }
             >
               <EditOutlined sx={{ color: 'red' }} />
             </IconButton>
@@ -230,25 +272,31 @@ export default function Abonnement_component() {
         Open form dialog
       </Button> */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>TYPE ABONNEMENT</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText>
+          {successMsg && <DialogContentText color="green">Modifié</DialogContentText>}
           <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
+              autoFocus
+              select
+              margin="dense"
+              id="name"
+              label={!successMsg && "Changer Type"}
+              type="email"
+              fullWidth
+              variant="standard"
+              onChange={(e)=>setabonnement(e.target.value)}
+            > 
+              <MenuItem  value="mois">
+                Mois
+              </MenuItem>
+              <MenuItem  value="semaine">
+                Semaine
+              </MenuItem>
+            </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button disabled={!abonnement} onClick={(e)=> editAbonnement(e)}>Modifier</Button>
+          {/* <Button onClick={handleClose}>Subscribe</Button> */}
         </DialogActions>
       </Dialog>
     </div>

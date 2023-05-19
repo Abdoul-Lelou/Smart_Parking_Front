@@ -2,10 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/joy/styles';
 import Grid from '@mui/joy/Grid';
 import Sheet from '@mui/joy/Sheet';
-import Card_dashboard from './submit_card';
+import Card_dashboard from './abonnements/submit_card';
 import Card_place from './site_card';
 import Card_systeme from './systeme_card';
-import Card_historique from './historique_card';
+import Card_historique from './historique/historique_card';
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:

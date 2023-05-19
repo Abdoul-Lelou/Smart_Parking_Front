@@ -9,10 +9,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EventIcon from '@mui/icons-material/Event';
 import { GridCloseIcon } from '@mui/x-data-grid';
 import { TransitionProps } from '@mui/material/transitions';
-import SimpleAccordion from './type_abonnement';
+import SimpleAccordion from '../type_abonnement';
 import MoisAbonnement from './mois_abonnement';
-import baseUrl from '../baseUrl';
+import baseUrl from '../../baseUrl';
 import { useState } from 'react';
+import SemaneAbonnement from './semaine_abonnement';
 
 
 const Transition1 = React.forwardRef(function Transition(
@@ -65,7 +66,7 @@ export default function Card_dashboard() {
       setdonnee(res.data);
       
     })
-  }, [])
+  }, [abonnementSemaine])
 
   const openDialog1 = () => {
     setopenUn(true);
@@ -192,7 +193,7 @@ export default function Card_dashboard() {
           </Toolbar>
         </AppBar>
         
-        <SimpleAccordion {...abonnementSemaine} />
+        <SemaneAbonnement {...abonnementSemaine} />
         
       </Dialog>
 
@@ -216,9 +217,7 @@ export default function Card_dashboard() {
             <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
               ABONNEMENT PAR MOIS
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
+            
           </Toolbar>
         </AppBar>
         

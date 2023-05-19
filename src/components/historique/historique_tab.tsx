@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
 import { Chip, Typography } from '@mui/material';
 import { useState } from 'react';
-import baseUrl from '../baseUrl';
+import baseUrl from '../../baseUrl';
 import moment from 'moment';
 
 
@@ -124,7 +124,7 @@ export default function HistoriqueTab() {
       field: 'user',
       // headerName: 'Nom',
       width: 70,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -139,7 +139,7 @@ export default function HistoriqueTab() {
       field: 'entrer',
       // headerName: 'Etat',
       width: 40,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -162,7 +162,7 @@ export default function HistoriqueTab() {
       field: 'sortie',
       // headerName: 'Etat',
       width: 40,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -185,7 +185,7 @@ export default function HistoriqueTab() {
       field: 'place',
       // headerName: 'Etat',
       width: 120,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -200,7 +200,7 @@ export default function HistoriqueTab() {
       field: 'dateEntrer',
       // headerName: 'Etat',
       width: 180,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -220,7 +220,7 @@ export default function HistoriqueTab() {
       field: 'dateSortie',
       // headerName: 'Etat',
       width: 180,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -270,7 +270,7 @@ export default function HistoriqueTab() {
       field: 'entrer',
       // headerName: 'Etat',
       width: 40,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -293,7 +293,7 @@ export default function HistoriqueTab() {
       field: 'sortie',
       // headerName: 'Etat',
       width: 40,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -316,7 +316,7 @@ export default function HistoriqueTab() {
       field: 'place',
       // headerName: 'Etat',
       width: 120,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -331,7 +331,7 @@ export default function HistoriqueTab() {
       field: 'dateEntrer',
       // headerName: 'Etat',
       width: 180,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -351,7 +351,7 @@ export default function HistoriqueTab() {
       field: 'dateSortie',
       // headerName: 'Etat',
       width: 180,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -363,7 +363,6 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>      
-          
           {moment(params?.row?.dateSortie).format(' ll  HH:mm:ss')}
         </>
       ),

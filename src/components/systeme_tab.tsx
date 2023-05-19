@@ -58,7 +58,7 @@ export default function SystemTab() {
     {
       field: 'nom',
       width: 150,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
@@ -69,7 +69,7 @@ export default function SystemTab() {
     {
       field: 'etat',
       width: 150,
-      editable: true,
+      editable: false,
       align: 'center', flex: 10, headerAlign: 'center',
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>

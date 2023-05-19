@@ -35,6 +35,7 @@ export default function EditProfil() {
     const [isCheckPass, setisCheckPass] = useState(false)
     const [isConfirm, setisConfirm] = useState(false)
     const [isEdited, setisEdited] = useState(false)
+    const [errorPass, seterrorPass] = useState(false)
 
 
     const [open, setOpen] = React.useState(false);
@@ -62,42 +63,8 @@ export default function EditProfil() {
 
     const login =  (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        console.log(oldpassword, password);
-        // return;
-        const idedit = localStorage.getItem('uid')?.split(' ').join('')
-        // baseUrl.patch(`update/${localStorage.getItem('uid')}`,{
-        //     headers: {Authorization : token},
-            
-        //   } ).then(function (response: { data: any; }) {
-           
-        //     console.log(response);
-            
-        //     // let userReponse = response.data;
-        //     // console.log(response.data.data.token);
-        //     // // return
-        //     // if (userReponse?.data?.userId) {
-        //     //   localStorage.setItem("token", userReponse?.data?.token)
-        //     //   localStorage.setItem("email", userReponse?.data?.email)
-        //     //   localStorage.setItem("uid", userReponse?.data?.userId)
-        //     //   localStorage.setItem("nom", userReponse?.data?.nom)
-        //     //   localStorage.setItem("prenom", userReponse?.data?.prenom)
-        //     //   localStorage.setItem("matricule", userReponse?.data?.matricule)
-        //     //   localStorage.setItem("tel", userReponse?.data?.telephone)
-        //     //   localStorage.setItem("role", userReponse?.data?.role)
-              
-        //     //   setTimeout(() => window.location.pathname ="dashboard", 1000);
-        //     // }else{
-                
-        //     //     console.log('dddddd');
-        //     //     return;
-        //     // }    
-            
-        //   })
-        //   .catch((error:any)=> {
-            
-            
-           
-        //   });
+       
+        const idedit = localStorage.getItem('uid')?.split(' ').join('')  
 
           baseUrl.patch(`/update/${idedit}`, data, config).then((res:any) => {
             
@@ -108,7 +75,7 @@ export default function EditProfil() {
                 setisEdited(true)
                 setTimeout(() => {
                     setisEdited(false)
-                    window.location.pathname='profil'
+                    window.location.reload()
                 }, 1500);
             }
             
@@ -116,7 +83,10 @@ export default function EditProfil() {
            
           }).catch((error:any) =>{
               console.log(error);
-              
+              seterrorPass(true)
+                setTimeout(() => {
+                    seterrorPass(false)
+                }, 2500);
           })
       
       };
@@ -149,8 +119,9 @@ export default function EditProfil() {
 
                                 {/* <FormControl sx={{ m: 1, width: '37ch' }} variant="outlined"> */}
 
-                                {!isEdited && <Typography variant='h6' align='center' sx={{ m: 'auto' }}>Modifier mot de passe</Typography> } 
+                                {!isEdited && !errorPass  && <Typography variant='h6' align='center' sx={{ m: 'auto' }}>Modifier mot de passe</Typography> } 
                                 {isEdited && <Typography variant='h6' align='center' sx={{ m: 'auto', color: "green" }}>Utilisateur modifié  </Typography> } 
+                                {errorPass && <Typography variant='body1' fontFamily="" align='center' sx={{ m: 'auto', color: "red" }}>Actuel mot de passe incorrecte  </Typography> } 
 
                                     
                                 {/* </FormControl> */}

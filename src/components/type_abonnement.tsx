@@ -1,4 +1,4 @@
-import FixedBottomNavigation from './semaine_abonnement';
+import FixedBottomNavigation from './abonnements/semaine_abonnement';
 
 export default function SimpleAccordion() {
   return (

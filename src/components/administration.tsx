@@ -32,7 +32,9 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { Chip } from '@mui/joy';
 import { DirectionsCar, Fireplace, Keyboard, North, NotificationsActive, WaterfallChartRounded } from '@mui/icons-material';
 import { useState } from 'react';
-import { Tab, Tabs } from '@mui/material';
+import { Fade, Tab, Tabs } from '@mui/material';
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:8000/";
 
 
 
@@ -74,19 +76,99 @@ function a11yProps(index: number) {
 
 export default function FullScreenDialog() {
   const [opens, setOpen] = React.useState(true);
-  const [actifFlamme, setactifFlamme] = React.useState(false)
-  const [actifPump, setactifPump] = useState(false)
-  const [actifBar, setactifBar] = useState(false);
+  const [actifFlammeMandela, setactifFlammeMandela] = React.useState(false)
+  const [actifPumpMandela, setactifPumpMandela] = useState(false)
+  const [actifBarMandela, setactifBarMandela] = useState(false);
   const [actifKeypad, setactifKeypad] = useState(false)
-  const [actifBell, setactifBell] = useState(false);
-  const [isMove, setisMove] = useState(false)
+  const [actifBellMandela, setactifBellMandela] = useState(false);
+  const [isMoveMandela, setisMoveMandela] = useState(false)
+  const [isMoveSurete, setisMoveSurete] = useState(false)
+  const [actifFlammeSurete, setactifFlammeSurete] = React.useState(false)
+  const [actifPumpSurete, setactifPumpSurete] = useState(false)
+  const [actifBarSurete, setactifBarSurete] = useState(false);
+  const [actifBellSurete, setactifBellSurete] = useState(false);
+  const [isMoveSimplon, setisMoveSimplon] = useState(false)
+  const [actifFlammeSimplon, setactifFlammeSimplon] = React.useState(false)
+  const [actifPumpSimplon, setactifPumpSimplon] = useState(false)
+  const [actifBarSimplon, setactifBarSimplon] = useState(false);
+  const [actifBellSimplon, setactifBellSimplon] = useState(false);
   const [value, setValue] = React.useState(0);
   const [site, setSite] = useState("");
   const ref = React.useRef<HTMLDivElement>(null);
-
+  const socket = socketIOClient(ENDPOINT);
+  
   React.useEffect(() => {
     if (ref.current) (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-  }, [actifBar]);
+
+    console.log(socket);
+    
+    socket.once('barriere_mandela', msg=>{
+      if(msg === 1) setactifBarMandela(true); else setactifBarMandela(false) 
+    })
+
+    socket.once('flamme_mandela', msg=>{
+      if(msg === 1) setactifFlammeMandela(true); else setactifFlammeMandela(false) 
+    })
+
+    socket.once('buzzer_mandela', msg=>{
+      if(msg === 1) setactifBellMandela(true); else setactifBellMandela(false) 
+    })
+
+    socket.once('pompe_mandela', msg=>{
+      if(msg === 1) setactifPumpMandela(true); else setactifPumpMandela(false) 
+    })
+
+    socket.once('mouvement_mandela', msg=>{
+      if(msg === 1) setisMoveMandela(true); else setisMoveMandela(false) 
+    })
+
+
+
+    socket.once('barriere_simplon', msg=>{
+      if(msg === 1) setactifBarSimplon(true); else setactifBarSimplon(false) 
+    })
+
+    socket.once('flamme_simplon', msg=>{
+      if(msg === 1) setactifFlammeSimplon(true); else setactifFlammeSimplon(false) 
+    })
+
+    socket.once('buzzer_simplon', msg=>{
+      if(msg === 1) setactifBellSimplon(true); else setactifBellSimplon(false) 
+    })
+
+    socket.once('pompe_simplon', msg=>{
+      if(msg === 1) setactifPumpSimplon(true); else setactifPumpSimplon(false) 
+    })
+
+    socket.once('mouvement_simplon', msg=>{
+      if(msg === 1) setisMoveSimplon(true); else setisMoveSimplon(false) 
+    })
+
+
+
+    socket.once('barriere_surete', msg=>{
+      if(msg === 1) setactifBarSurete(true); else setactifBarSurete(false) 
+    })
+
+    socket.once('flamme_surete', msg=>{
+      if(msg === 1) setactifFlammeSurete(true); else setactifFlammeSurete(false) 
+    })
+
+    socket.once('buzzer_surete', msg=>{
+      if(msg === 1) setactifBellSurete(true); else setactifBellSurete(false) 
+    })
+
+    socket.once('pompe_surete', msg=>{
+      if(msg === 1) setactifPumpSurete(true); else setactifPumpSurete(false) 
+    })
+
+    socket.once('mouvement_surete', msg=>{
+      if(msg === 1) setisMoveSurete(true); else setisMoveSurete(false) 
+    })
+
+
+
+  }, [actifBarMandela,socket]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -116,10 +198,10 @@ export default function FullScreenDialog() {
             key={move}
             secondaryAction={
               <>
-                {!isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
-                  Voiture non detecté 1
+                {!isMoveMandela && <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                  Voiture non detecté
                 </Chip>}
-                {isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                {isMoveMandela && <Chip variant="soft" startDecorator={<DirectionsCar />}>
                   Voiture en presence
                 </Chip>}
               </>
@@ -128,13 +210,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!isMove && <Avatar
+                {!isMoveMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={moveOff}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {isMove && <Avatar
+                {isMoveMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={move}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -153,11 +235,11 @@ export default function FullScreenDialog() {
             key={fire}
             secondaryAction={
               <>
-                {!actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
+                {actifFlammeMandela && <Chip variant="soft" startDecorator={<Fireplace />}>
                   Flamme dectetée
                 </Chip>}
-                {actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
-                  Flamme dectetée
+                {!actifFlammeMandela && <Chip variant="soft" startDecorator={<Fireplace />}>
+                  Aucune flamme 
                 </Chip>}
               </>
             }
@@ -165,14 +247,14 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifFlamme && <Avatar
+                {!actifFlammeMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={flamme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
 
-                {actifFlamme && <Avatar
+                {actifFlammeMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={fire}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -190,10 +272,10 @@ export default function FullScreenDialog() {
             key={bell}
             secondaryAction={
               <>
-                {!actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                {!actifBellMandela && <Chip variant="soft" startDecorator={<NotificationsActive />}>
                   Alarme non active
                 </Chip>}
-                {actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                {actifBellMandela && <Chip variant="soft" startDecorator={<NotificationsActive />}>
                   Alarme declenchée
                 </Chip>}
               </>
@@ -202,13 +284,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBell && <Avatar
+                {!actifBellMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={alarme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBell && <Avatar
+                {actifBellMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bell}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -227,10 +309,10 @@ export default function FullScreenDialog() {
             key={bar}
             secondaryAction={
               <>
-                {!actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {!actifBarMandela && <Chip variant="soft" startDecorator={<North />}>
                   Barriere baissé
                 </Chip>}
-                {actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {actifBarMandela && <Chip variant="soft" startDecorator={<North />}>
                   Barriere soulevé
                 </Chip>}
               </>
@@ -239,13 +321,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBar && <Avatar
+                {!actifBarMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={levante}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBar && <Avatar
+                {actifBarMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bar}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -264,10 +346,10 @@ export default function FullScreenDialog() {
             key={pump}
             secondaryAction={
               <>
-                {!actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {!actifPumpMandela && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage à l'arrêt
                 </Chip>}
-                {actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {actifPumpMandela && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage declenchée
                 </Chip>}
               </>
@@ -276,13 +358,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifPump && <Avatar
+                {!actifPumpMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pompe}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifPump && <Avatar
+                {actifPumpMandela && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pump}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -294,10 +376,9 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Jet d'eau</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
-          <ListItem
+          {/* <ListItem
             key={keyboard}
             secondaryAction={
               <>
@@ -331,7 +412,6 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Clavier</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -368,9 +448,8 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Capteur RFID</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
 
       </TabPanel>
@@ -381,25 +460,32 @@ export default function FullScreenDialog() {
             key={move}
             secondaryAction={
               <>
-                {!isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
-                  Voiture non detecté 2
-                </Chip>}
-                {isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
-                  Voiture en presence
-                </Chip>}
+                {!isMoveSurete && 
+                <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                  Voiture non detecté 
+                </Chip>
+                }
+                {isMoveSurete && 
+
+                  <Fade in={isMoveSurete} timeout={2000}>
+                      <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                    Voiture en presence
+                  </Chip>
+                  </Fade>
+                }
               </>
             }
             disablePadding
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!isMove && <Avatar
+                {!isMoveSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={moveOff}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {isMove && <Avatar
+                {isMoveSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={move}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -418,26 +504,30 @@ export default function FullScreenDialog() {
             key={fire}
             secondaryAction={
               <>
-                {!actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
-                  Flamme dectetée
+                {!actifFlammeSurete && <Chip variant="soft" startDecorator={<Fireplace />}>
+                  Aucune flamme
                 </Chip>}
-                {actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
-                  Flamme dectetée
-                </Chip>}
+                {actifFlammeSurete && 
+                  <Fade in={actifFlammeSurete} timeout={2000}>
+                    <Chip variant="soft" startDecorator={<Fireplace />}>
+                      Flamme dectetée
+                    </Chip>
+                  </Fade>
+                }
               </>
             }
             disablePadding
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifFlamme && <Avatar
+                {!actifFlammeSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={flamme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
 
-                {actifFlamme && <Avatar
+                {actifFlammeSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={fire}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -455,25 +545,29 @@ export default function FullScreenDialog() {
             key={bell}
             secondaryAction={
               <>
-                {!actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                {!actifBellSurete && <Chip variant="soft" startDecorator={<NotificationsActive />}>
                   Alarme non active
                 </Chip>}
-                {actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
-                  Alarme declenchée
-                </Chip>}
+                {actifBellSurete && 
+                <Fade in={actifBellSurete} timeout={2000}>
+                  <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                    Alarme declenchée
+                  </Chip>
+                </Fade>
+                }
               </>
             }
             disablePadding
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBell && <Avatar
+                {!actifBellSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={alarme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBell && <Avatar
+                {actifBellSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bell}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -492,10 +586,10 @@ export default function FullScreenDialog() {
             key={bar}
             secondaryAction={
               <>
-                {!actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {!actifBarSurete && <Chip variant="soft" startDecorator={<North />}>
                   Barriere baissé
                 </Chip>}
-                {actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {actifBarSurete && <Chip variant="soft" startDecorator={<North />}>
                   Barriere soulevé
                 </Chip>}
               </>
@@ -504,13 +598,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBar && <Avatar
+                {!actifBarSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={levante}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBar && <Avatar
+                {actifBarSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bar}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -529,10 +623,10 @@ export default function FullScreenDialog() {
             key={pump}
             secondaryAction={
               <>
-                {!actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {!actifPumpSurete && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage à l'arrêt
                 </Chip>}
-                {actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {actifPumpSurete && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage declenchée
                 </Chip>}
               </>
@@ -541,13 +635,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifPump && <Avatar
+                {!actifPumpSurete && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pompe}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifPump && <Avatar
+                {actifPumpSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pump}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -562,7 +656,7 @@ export default function FullScreenDialog() {
               {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
-          <ListItem
+          {/* <ListItem
             key={keyboard}
             secondaryAction={
               <>
@@ -596,7 +690,6 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Clavier</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -633,9 +726,8 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Capteur RFID</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
 
       </TabPanel>
@@ -646,10 +738,10 @@ export default function FullScreenDialog() {
             key={move}
             secondaryAction={
               <>
-                {!isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
-                  Voiture non detecté 3
+                {!isMoveSimplon && <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                  Voiture non detecté 
                 </Chip>}
-                {isMove && <Chip variant="soft" startDecorator={<DirectionsCar />}>
+                {isMoveSimplon && <Chip variant="soft" startDecorator={<DirectionsCar />}>
                   Voiture en presence
                 </Chip>}
               </>
@@ -658,13 +750,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!isMove && <Avatar
+                {!isMoveSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={moveOff}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {isMove && <Avatar
+                {isMoveSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={move}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -683,11 +775,11 @@ export default function FullScreenDialog() {
             key={fire}
             secondaryAction={
               <>
-                {!actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
+                {!actifFlammeSimplon && <Chip variant="soft" startDecorator={<Fireplace />}>
                   Flamme dectetée
                 </Chip>}
-                {actifFlamme && <Chip variant="soft" startDecorator={<Fireplace />}>
-                  Flamme dectetée
+                {actifFlammeSimplon && <Chip variant="soft" startDecorator={<Fireplace />}>
+                  Aucune flamme
                 </Chip>}
               </>
             }
@@ -695,14 +787,14 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifFlamme && <Avatar
+                {!actifFlammeSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={flamme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
 
-                {actifFlamme && <Avatar
+                {actifFlammeSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={fire}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -720,10 +812,10 @@ export default function FullScreenDialog() {
             key={bell}
             secondaryAction={
               <>
-                {!actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                {!actifBellSimplon && <Chip variant="soft" startDecorator={<NotificationsActive />}>
                   Alarme non active
                 </Chip>}
-                {actifBell && <Chip variant="soft" startDecorator={<NotificationsActive />}>
+                {actifBellSimplon && <Chip variant="soft" startDecorator={<NotificationsActive />}>
                   Alarme declenchée
                 </Chip>}
               </>
@@ -732,13 +824,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBell && <Avatar
+                {!actifBellSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={alarme}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBell && <Avatar
+                {actifBellSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bell}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -757,10 +849,10 @@ export default function FullScreenDialog() {
             key={bar}
             secondaryAction={
               <>
-                {!actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {!actifBarSimplon && <Chip variant="soft" startDecorator={<North />}>
                   Barriere baissé
                 </Chip>}
-                {actifBar && <Chip variant="soft" startDecorator={<North />}>
+                {actifBarSimplon && <Chip variant="soft" startDecorator={<North />}>
                   Barriere soulevé
                 </Chip>}
               </>
@@ -769,13 +861,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifBar && <Avatar
+                {!actifBarSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={levante}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifBar && <Avatar
+                {actifBarSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={bar}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -794,10 +886,10 @@ export default function FullScreenDialog() {
             key={pump}
             secondaryAction={
               <>
-                {!actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {!actifPumpSimplon && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage à l'arrêt
                 </Chip>}
-                {actifPump && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
+                {actifPumpSimplon && <Chip variant="soft" startDecorator={<WaterfallChartRounded />}>
                   Arrosage declenchée
                 </Chip>}
               </>
@@ -806,13 +898,13 @@ export default function FullScreenDialog() {
           >
             <ListItemButton sx={{ boxShadow: 4 }}>
               <ListItemAvatar sx={{ p: 1 }}>
-                {!actifPump && <Avatar
+                {!actifPumpSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pompe}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
                   size='lg'
                 />}
-                {actifPump && <Avatar
+                {actifPumpSimplon && <Avatar
                   // alt={`Avatar n°${value + 1}`}
                   src={pump}
                   sx={{ m: '0 auto', height: 50, width: 50 }}
@@ -827,7 +919,7 @@ export default function FullScreenDialog() {
               {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
-          <ListItem
+          {/* <ListItem
             key={keyboard}
             secondaryAction={
               <>
@@ -861,7 +953,6 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Clavier</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -898,9 +989,8 @@ export default function FullScreenDialog() {
                   <Typography variant='h6'>Capteur RFID</Typography>
                 }
               />
-              {/* <ListItemText id={labelId} primary={`Line item ${value + 1}`} /> */}
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
 
       </TabPanel>

@@ -27,19 +27,19 @@ export default function MoisArchive() {
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab = []
       for (const iterator of res.data) {
-        if(iterator.typeAbonnement =="mois"){
+        if(iterator.typeAbonnement =="mois" && !iterator.etat){
         
-          let date = moment(iterator.dateInscrit).format('YYYY-MM-DD');
+          // let date = moment(iterator.dateInscrit).format('YYYY-MM-DD');
           
-          const date1 = new Date(date).getTime(); // replace with your first date
-          const date2 = new Date().getTime(); // replace with your second date (or use a specific date)
+          // const date1 = new Date(date).getTime(); // replace with your first date
+          // const date2 = new Date().getTime(); // replace with your second date (or use a specific date)
 
-          const oneMonthInMillis = 1000 * 60 * 60 * 24 * 30;
+          // const oneMonthInMillis = 1000 * 60 * 60 * 24 * 30;
 
-          if (date2 - date1 > oneMonthInMillis) {
+          // if (date2 - date1 > oneMonthInMillis) {
             tab.push(iterator)
             setabonnementArchive(tab)
-          }
+          // }
         }
         
       }

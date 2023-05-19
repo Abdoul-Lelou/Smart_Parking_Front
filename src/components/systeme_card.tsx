@@ -99,9 +99,7 @@ export default function Card_systeme() {
             <Typography sx={{ m:"0 auto"}} level="h6" component="div">   
               SUPERVISION DU SYSTEME
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
+            
           </Toolbar>
         </AppBar>
         

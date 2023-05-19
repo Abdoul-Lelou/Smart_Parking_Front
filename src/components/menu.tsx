@@ -51,7 +51,7 @@ export default function MenuDashboard() {
       {!fullScreen && <Box sx={{ py: 1, pr: 4,ml:1, mb:1, maxHeight:"80%", maxWidth: '85%',  }}>
 
           <Typography alignItems='center'> 
-              <Avatar sx={{m:'0 auto', p:6}} alt={userPrenom} src='' />
+              <Avatar sx={{m:'0 auto', p:6}} alt={userPrenom}  src="/static/images/avatar/1.jpg" />
           </Typography>
           <Typography
               align='center'
@@ -137,7 +137,7 @@ export default function MenuDashboard() {
             </Link>
           </ListItem>}
 
-          {userRole !=="user" && <ListItem >
+          {/* {userRole !=="user" && <ListItem >
           <Link to="/systeme" style={linkStyle} onClick={()=> setIndex(3)}>
             <ListItemButton
               selected={index === 3}
@@ -151,7 +151,7 @@ export default function MenuDashboard() {
               <ListItemContent>Systeme</ListItemContent>
             </ListItemButton>
             </Link>
-          </ListItem>}
+          </ListItem>} */}
           
           {userRole !=="user" &&<ListItem >
             <ListItemButton

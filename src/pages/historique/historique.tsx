@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import HistoriqueTab from '../../components/historique_tab'
+import HistoriqueTab from '../../components/historique/historique_tab'
 import ShowBackdrop from '../../components/backdrop';
 
 const Historique = () => {

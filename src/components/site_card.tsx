@@ -10,6 +10,8 @@ import { CardContent } from '@mui/joy';
 import PlaceIcon from '@mui/icons-material/Place';
 import RvHookupIcon from '@mui/icons-material/RvHookup';
 import ViewDayIcon from '@mui/icons-material/ViewDay';
+import baseUrl from '../baseUrl';
+import { useState } from 'react';
 
 export default function Card_place() {
 
@@ -17,9 +19,53 @@ export default function Card_place() {
   const [open, setOpen] = React.useState(false);
   const [parkUn, setparkUn] = React.useState(false)
   const [parkDeux, setparkDeux] = React.useState(false);
-  const [parkTrois, setparkTrois] = React.useState(false)
+  const [parkTrois, setparkTrois] = React.useState(false);
+  const [placeUn, setplaceUn] = useState(Number)
+  const [placeDeux, setplaceDeux] = useState(Number)
+  const [placeTrois, setplaceTrois] = useState(Number)
+  const [totalUn, settotalUn] = useState(Number)
+  const [totalDeux, settotalDeux] = useState(Number)
+  const [totalTrois, settotalTrois] = useState(Number)
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  
+  let token = window.localStorage.getItem('token')
+  let compteur = 0;
+  React.useEffect(() => {
+    
+  baseUrl.get('/getSite  ',{headers: {Authorization : token}}).then((res:any) => {
+
+    let tab = []; let tabUser = []; let tabArchive=[];
+
+    for (const iterator of res.data) {
+        console.log(iterator);
+        
+      if (iterator.nom ==="Mandela") {
+
+        setplaceUn(()=> iterator.occupe)
+        settotalUn(()=> iterator.nombre)
+
+      } else if (iterator.nom ==="Surêté") {
+
+        setplaceDeux(()=> iterator.occupe)
+        settotalDeux(()=> iterator.nombre)
+
+      } else {
+        setplaceTrois(()=> iterator.occupe)
+        settotalTrois(()=> iterator.nombre)
+      }
+      
+    }
+
+  })
+  
+    return () => {
+      
+    }
+  }, [])
+  
+
 
   const firstDialog = () => {
     setparkUn(true);
@@ -103,8 +149,8 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Grand Dakar" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label="Place Restante: 18" color='error'  />
-                      <Chip icon={<ViewDayIcon />} label="Total: 35" color='warning'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeUn}`} color='error'  />
+                      <Chip icon={<ViewDayIcon />} label={`Total: ${totalUn}`} color='warning'  />
                   </Typography>
 
 
@@ -149,8 +195,8 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Fann Hock" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label="Place Restante: 10" color='error'  />
-                      <Chip icon={<ViewDayIcon />} label="Total: 28" color='warning'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeDeux}`} color='error'  />
+                      <Chip icon={<ViewDayIcon />} label={`Total: ${totalDeux}`} color='warning'  />
                   </Typography>
 
 
@@ -196,8 +242,8 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Medina Rue 22" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label="Place Restante: 7" color='error'  />
-                      <Chip icon={<ViewDayIcon />} label="Total: 40" color='warning'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeTrois}`} color='error'  />
+                      <Chip icon={<ViewDayIcon />} label={`Total  : ${totalTrois}`} color='warning'  />
                   </Typography>
 
 

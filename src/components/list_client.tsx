@@ -47,7 +47,7 @@ const List_client=() => {
           field: 'nom',
           // headerName: 'Email',
           width: 100,
-          editable: true,
+          editable: false,
           align:'center', flex:10, headerAlign:'center',
           renderHeader: (params: GridColumnHeaderParams) => (
             <strong>
@@ -62,7 +62,7 @@ const List_client=() => {
             field: 'prenom',
             // headerName: 'Email',
             width: 100,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>
@@ -77,7 +77,7 @@ const List_client=() => {
             field: 'email',
             // headerName: 'Email',
             width: 150,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>
@@ -92,7 +92,7 @@ const List_client=() => {
         //   field: 'matricule',
         //   // headerName: 'Matricule',
         //   width: 100,
-        //   editable: true,
+        //   editable: false,
         //   align:'center', flex:10, headerAlign:'center',
         //   renderHeader: (params: GridColumnHeaderParams) => (
         //     <strong>
@@ -107,7 +107,7 @@ const List_client=() => {
             field: 'code',
             // headerName: 'Email',
             width: 80,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>
@@ -122,7 +122,7 @@ const List_client=() => {
             field: 'rfid',
             // headerName: 'Email',
             width: 100,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>
@@ -137,7 +137,7 @@ const List_client=() => {
             field: 'telephone',
             // headerName: 'Email',
             width: 100,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>
@@ -152,7 +152,7 @@ const List_client=() => {
             field: 'dateInscrit',
             // headerName: 'Email',
             width: 100,
-            editable: true,
+            editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
               <strong>

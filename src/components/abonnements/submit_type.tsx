@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridColumnHeaderParams } from '@mui/x-data-grid';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, MenuItem, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormGroup, IconButton, MenuItem, Switch, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { EditOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import baseUrl from '../../baseUrl';
@@ -64,7 +64,9 @@ export default function Abonnement_component() {
   const [abonnementSemaine, setabonnementSemaine] = useState("" as any)
   const [editId, seteditId] = useState("" as any)
   const [abonnement, setabonnement] = useState("" as any)
+  const [tab, setTab] = useState("" as any)
   const [successMsg, setsuccessMsg] = useState(false)
+  const [valideStatus, setvalideStatus] = useState(false)
 
 
   let token = window.localStorage.getItem('token')
@@ -73,15 +75,14 @@ export default function Abonnement_component() {
     baseUrl.get('/getAll  ',{headers: {Authorization : token}}).then((res:any) => {
       let tab1 = []
       let tab2 = [];
+      setTab(res.data)
       for (const iterator of res.data) {
         if(iterator.typeAbonnement =="mois"){
 
           tab1.push(iterator)
-          console.log("tab1: ....",tab1);
           setabonnementMois(tab1)
         }else if(iterator.typeAbonnement =="semaine"){
           tab2.push(iterator)
-          console.log("tab2: ....",tab2);
           setabonnementSemaine(tab2)
         }
         
@@ -94,23 +95,23 @@ export default function Abonnement_component() {
 
     e.preventDefault();
 
-    const user = {"typeAbonnement": abonnement}
-
-
-
+    
+    let userStatus = tab && tab?.find((x:any)=> x?._id === editId)
+    let etat = userStatus?.etat
+    
+    const user = {"typeAbonnement": abonnement, "dateInscrit": new Date(), "etat": !etat}
 
     const token = localStorage.getItem('token')
 
     const config = { headers: { Authorization: token } }
     const data = user;
     // console.log(uidedit?.split(' ').join(''));
-    console.log(editId);
+    //console.log(editId);
     
     
     baseUrl.patch(`/update/${editId}`, data, config).then((res: any) => {
      
       if (res.data.includes("result modifier")) {
-       console.log("tout va bien");
        
         setsuccessMsg(true);
         setTimeout(() => {
@@ -140,6 +141,65 @@ export default function Abonnement_component() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
   };
+
+  const checkDate =(dateInMilliseconds: string | number | Date)=>{
+    // const dateInMilliseconds = 1651161600000; // Replace this with the actual date in milliseconds
+    const dateObject = new Date(dateInMilliseconds);
+    const currentDate = new Date();
+
+    currentDate.setMonth(currentDate.getMonth() - 1); // Subtract one month from the current date
+
+    if (dateObject > currentDate) {
+      // console.log('The date is within the last month.');
+      return false
+    } else {
+      // console.log('The date is more than a month ago.');
+      return true
+    }
+  }
+
+  const editUser = (e: any) => {
+    e.preventDefault();
+
+    let userStatus = tab && tab?.find((x:any)=> x?._id === editId)
+    let etat = userStatus?.etat?false:true
+    setvalideStatus(etat)
+    // etat ? setvalideStatus(false):setvalideStatus(true)
+    const config = { headers: { Authorization: token } }
+    if(userStatus.etat=== true){
+      let data = {"etat":false, "dateInscrit": "2020-01-01T00:00:00.054Z",}
+      baseUrl.patch(`/update/${userStatus?._id}`, data, config).then((res: any) => {
+     
+        if (res.data.includes("result modifier")) {
+         
+          setsuccessMsg(true);
+          setTimeout(() => {
+            setsuccessMsg(false);
+            handleClose();
+          }, 2000);
+        }
+      })
+    }
+    else{
+      let data = {"etat":true,"dateInscrit": new Date()}
+      baseUrl.patch(`/update/${userStatus?._id}`, data, config).then((res: any) => {
+     
+        if (res.data.includes("result modifier")) {
+         
+          setsuccessMsg(true);
+          setTimeout(() => {
+            setsuccessMsg(false);
+            handleClose();
+          }, 2000);
+        }
+      })
+    }
+    
+
+    // return;
+    
+   
+  }
 
   const columns: GridColDef[] = [
     // { field: 'id', headerName: 'ID', width: 90 },
@@ -174,6 +234,36 @@ export default function Abonnement_component() {
       ),
     },
     {
+      field: 'status',
+      // headerName: 'Matricule',
+      width: 100,
+      editable: false,
+      align:'center', flex:10, headerAlign:'center',
+      renderHeader: (params: GridColumnHeaderParams) => (
+        <strong>
+          {'Status '}
+            {/* <span role="img" aria-label="enjoy">
+              🎂
+            </span> */}
+        </strong>
+      ),
+      renderCell: (params) => (
+        <>      
+          
+              {
+             
+              checkDate( Date.parse(params?.row?.dateInscrit)) || !params?.row?.etat?
+                <Chip variant='filled' sx={{boxShadow:5}} size='small' color='error' label={"Expiré"} />
+              : 
+                <Chip variant='outlined' sx={{boxShadow:5}} size='small' color='success' label={"Valide"} />
+              
+              }
+            {/* <EditOutlined sx={{ color: 'red' }} /> */}
+         
+        </>
+      ),
+    },
+    {
         field: 'action',
         // headerName: 'Actions',
         width: 150,
@@ -181,7 +271,7 @@ export default function Abonnement_component() {
         renderCell: (params) => (
           <div>      
             <IconButton 
-            onClick={()=> {handleClickOpen(); seteditId(params?.row?._id)} }
+            onClick={()=> {handleClickOpen(); seteditId(params?.row?._id); setvalideStatus(params?.row?.etat)} }
             >
               <EditOutlined sx={{ color: 'red' }} />
             </IconButton>
@@ -281,25 +371,48 @@ export default function Abonnement_component() {
               margin="dense"
               id="name"
               label={!successMsg && "Changer Type"}
-              type="email"
+              type="text"
               fullWidth
               variant="standard"
-              onChange={(e)=>setabonnement(e.target.value)}
+              onChange={(e)=>{
+                setabonnement(e.target.value);
+                setTimeout(() => {
+                  setabonnement('')
+                }, 2000);
+              }}
             > 
+              <MenuItem selected={true} disableGutters disabled sx={{display:'flex', justifyContent:'center'}}>
+                .....Choisir.....
+              </MenuItem>
               <MenuItem  value="mois">
                 Mois
               </MenuItem>
               <MenuItem  value="semaine">
                 Semaine
               </MenuItem>
-            </TextField>
+          </TextField>
+          &nbsp;
+          <FormGroup>
+            <FormControlLabel 
+              control={
+                <Switch 
+                  defaultChecked={valideStatus} 
+                  onChange={(e)=>editUser(e)}
+                />
+              } 
+              label={!valideStatus ? "Reactiver": "Activer"} 
+            />
+
+            
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button disabled={!abonnement} onClick={(e)=> editAbonnement(e)}>Modifier</Button>
           {/* <Button onClick={handleClose}>Subscribe</Button> */}
+          
         </DialogActions>
       </Dialog>
-    </div>
+    </div>  
     </>
   );
 }

@@ -83,15 +83,16 @@ export default function Profil() {
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
                                     Prenom : {localStorage.getItem('prenom')}
                                 </MenuItem>
+                                <MenuItem sx={{ p:1,display: 'flex', justifyContent: 'center' }}>
+                                    Telephone : {localStorage.getItem('tel')}
+                                </MenuItem>
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
                                     Matricule : {localStorage.getItem('matricule')}
                                 </MenuItem>
                                 <MenuItem sx={{p:1, display: 'flex', justifyContent: 'center' }}>
                                     Email : {localStorage.getItem('email')}
                                 </MenuItem>
-                                <MenuItem sx={{ p:1,display: 'flex', justifyContent: 'center' }}>
-                                    Tel : {localStorage.getItem('tel')}
-                                </MenuItem>
+                                
                                 <Divider />
                 
                                 <Stack direction="row" spacing={1} sx={{ display: 'flex', justifyContent: 'center'}}>

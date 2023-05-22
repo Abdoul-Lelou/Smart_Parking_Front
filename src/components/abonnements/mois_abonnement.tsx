@@ -1003,6 +1003,7 @@ export default function MoisAbonnement() {
                       borderRadius: '50%',
                       bgcolor: 'background.body',
                     }}
+                    onClick={closeeditDialog}
                   />
                   <Typography
                     // component="h5"

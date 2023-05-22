@@ -109,7 +109,7 @@ export default function Login() {
 
       const login =  (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        alert(email);
+        // alert(email);
         notifyReset(email);
         // return;
         baseUrl.post('login',{
@@ -127,7 +127,7 @@ export default function Login() {
               localStorage.setItem("nom", userReponse?.data?.nom)
               localStorage.setItem("prenom", userReponse?.data?.prenom)
               localStorage.setItem("matricule", userReponse?.data?.matricule)
-              localStorage.setItem("tel", userReponse?.data?.telephone)
+              localStorage.setItem("tel", userReponse?.data?.tel)
               localStorage.setItem("role", userReponse?.data?.role)
               
               setTimeout(() => window.location.pathname ="dashboard", 1000);

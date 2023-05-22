@@ -40,6 +40,8 @@ const List_client=() => {
         return true
       }
     }
+
+    
   
     const columns: GridColDef[] = [
         // { field: 'id', headerName: 'ID', width: 90 },
@@ -182,7 +184,7 @@ const List_client=() => {
 
 
                    
-                    checkDate( Date.parse(params?.row?.dateInscrit))?
+                    checkDate( Date.parse(params?.row?.dateInscrit)) || !params?.row?.etat?
                       <Chip variant='filled' sx={{boxShadow:5}} size='small' color='error' label={"Expiré"} />
                     : 
                       <Chip variant='filled' sx={{boxShadow:5}} size='small' color='success' label={"Valide"} />

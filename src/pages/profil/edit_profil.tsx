@@ -82,11 +82,13 @@ export default function EditProfil() {
             // window.location.pathname ="datatable"
            
           }).catch((error:any) =>{
-              console.log(error);
+
               seterrorPass(true)
-                setTimeout(() => {
+              setTimeout(() => {
+                    setOldpassword('')
                     seterrorPass(false)
                 }, 2500);
+
           })
       
       };
@@ -120,7 +122,7 @@ export default function EditProfil() {
                                 {/* <FormControl sx={{ m: 1, width: '37ch' }} variant="outlined"> */}
 
                                 {!isEdited && !errorPass  && <Typography variant='h6' align='center' sx={{ m: 'auto' }}>Modifier mot de passe</Typography> } 
-                                {isEdited && <Typography variant='h6' align='center' sx={{ m: 'auto', color: "green" }}>Utilisateur modifié  </Typography> } 
+                                {isEdited && <Typography variant='h6' align='center' sx={{ m: 'auto', color: "green" }}>Mot de passe modifié  </Typography> } 
                                 {errorPass && <Typography variant='body1' fontFamily="" align='center' sx={{ m: 'auto', color: "red" }}>Actuel mot de passe incorrecte  </Typography> } 
 
                                     
@@ -183,7 +185,7 @@ export default function EditProfil() {
                                     {isConfirm && <Typography variant='subtitle2' color="red">Mot de passe ne correspond pas</Typography>}
                                 </FormControl>
                                 <FormControl sx={{  width: '37ch' }} variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Ancien mot de passe</InputLabel>
+                                    <InputLabel htmlFor="outlined-adornment-password">Actuel mot de passe</InputLabel>
                                     <OutlinedInput
                                         id="oldpassword"
                                         type={showPassword ? 'text' : 'password'}
@@ -212,10 +214,11 @@ export default function EditProfil() {
 
                                 
 
-                                &nbsp;
-                                <Button
+                               <div>
+                               <Button
                                     type="submit"
                                     fullWidth
+                                    size='small'
                                     variant="contained"
                                     value={confirmPass}
                                     disabled={!password || !oldpassword || !confirmPass}
@@ -226,7 +229,7 @@ export default function EditProfil() {
                                         }, 2000);
                                     }}
                                     // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
-                                    sx={{ maxHeight: '50px', maxWidth: '200px', }}
+                                    sx={{ maxHeight: '35px', maxWidth: '150px', }}
                                     // disabled={!email || !password}
                                 >
                                     {
@@ -239,6 +242,23 @@ export default function EditProfil() {
 
                                     }
                                 </Button>
+                                
+
+                                <Button
+                                    type="reset"
+                                    fullWidth
+                                    size='small'
+                                    
+                                    variant="contained"
+                                    color='error'
+                                    onClick={()=> window.location.pathname='profil'}
+                                    // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
+                                    sx={{ maxHeight: '35px', maxWidth: '150px',mt:1 }}
+                                    // disabled={!email || !password}
+                                >
+                                    Annuler
+                                </Button>
+                               </div>
 
                                 
                                 {/*  <Copyright sx={{ mt: 5 }} /> */}

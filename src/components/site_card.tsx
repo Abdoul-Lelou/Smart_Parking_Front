@@ -36,8 +36,6 @@ export default function Card_place() {
     
   baseUrl.get('/getSite  ',{headers: {Authorization : token}}).then((res:any) => {
 
-    let tab = []; let tabUser = []; let tabArchive=[];
-
     for (const iterator of res.data) {
         console.log(iterator);
         
@@ -92,7 +90,7 @@ export default function Card_place() {
         <CardOverflow>
           <AspectRatio ratio="8">
             <Typography level="h2" sx={{ fontSize: 'md', mt: 14, background: "#5288FC" }}>
-              Place restante
+              Place Occupée
               {/* {...title1} */}
             </Typography>
           </AspectRatio>
@@ -149,7 +147,7 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Grand Dakar" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeUn}`} color='error'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Occupée: ${placeUn}`} color='error'  />
                       <Chip icon={<ViewDayIcon />} label={`Total: ${totalUn}`} color='warning'  />
                   </Typography>
 
@@ -195,7 +193,7 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Fann Hock" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeDeux}`} color='error'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Occupée: ${placeDeux}`} color='error'  />
                       <Chip icon={<ViewDayIcon />} label={`Total: ${totalDeux}`} color='warning'  />
                   </Typography>
 
@@ -242,7 +240,7 @@ export default function Card_place() {
                 <CardContent>
                   <Typography sx={{ fontSize: 14, display:"flex", justifyContent:'space-around'}}  gutterBottom>
                       <Chip icon={<PlaceIcon />} label="Medina Rue 22" color='secondary'  />
-                      <Chip icon={<RvHookupIcon />} label={`Place Restante: ${placeTrois}`} color='error'  />
+                      <Chip icon={<RvHookupIcon />} label={`Place Occupée: ${placeTrois}`} color='error'  />
                       <Chip icon={<ViewDayIcon />} label={`Total  : ${totalTrois}`} color='warning'  />
                   </Typography>
 

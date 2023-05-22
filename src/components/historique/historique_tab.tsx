@@ -62,7 +62,7 @@ export default function HistoriqueTab() {
    
     
     baseUrl.get('/getParking',{headers: {Authorization : token}}).then((res:any) => {
-      // console.log(res.data);
+      console.log(res.data);
       if (userRole ==="user") {
         let tab=[]
         for (const iterator of res.data) {
@@ -152,7 +152,7 @@ export default function HistoriqueTab() {
       renderCell: (params) => (
         <>      
           {
-          params?.row?.sortie ==="1" ? <Chip variant='filled' color='success' label="Oui"/>
+          params?.row?.entrer === true ? <Chip variant='filled' size='medium' color='success' label="Oui"/>
           : <Chip variant='outlined' color='error' label="Non" />
           }   
         </>
@@ -175,7 +175,7 @@ export default function HistoriqueTab() {
       renderCell: (params) => (
         <>        
           {
-          params?.row?.sortie ==="1" ? <Chip variant='filled' color='success' label="Oui"/>
+          params?.row?.sortie === true ? <Chip variant='filled' color='success' label="Oui"/>
           : <Chip variant='outlined' color='error' label="Non" />
           }   
         </>
@@ -212,7 +212,7 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>      
-          {moment(params?.row?.dateEntrer).format('LL')}
+          {moment(params?.row?.dateEntrer).add('days').calendar()}
         </>
       ),
     },
@@ -231,9 +231,8 @@ export default function HistoriqueTab() {
         </strong>
       ),
       renderCell: (params) => (
-        <>      
-          
-          {moment(params?.row?.dateSortie).format('LL')}
+        <>                
+          {params?.row?.dateSortie? moment(params?.row?.dateSortie).add('days').calendar():"Pas encore"}
         </>
       ),
     },
@@ -283,7 +282,7 @@ export default function HistoriqueTab() {
       renderCell: (params) => (
         <>      
           {
-          params?.row?.sortie  ? <Chip variant='filled' color='success' label="Oui"/>
+          params?.row?.sortie === true  ? <Chip variant='filled' color='success' label="Oui"/>
           : <Chip variant='outlined' color='error' label="Non" />
           }   
         </>
@@ -306,7 +305,7 @@ export default function HistoriqueTab() {
       renderCell: (params) => (
         <>        
           {
-          params?.row?.sortie ==="1" ? <Chip variant='filled' color='success' label="Oui"/>
+          params?.row?.sortie === true ? <Chip variant='filled' color='success' label="Oui"/>
           : <Chip variant='outlined' color='error' label="Non" />
           }   
         </>

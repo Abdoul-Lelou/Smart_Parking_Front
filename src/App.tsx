@@ -70,7 +70,7 @@ socket.emit('test', "ca marche")
       }
 
 
-      {!showHome && !showLogin && <Grid sx={{ background: '#5280fc', minHeight: '100vh', p: 2 }}>
+      {!showHome && !showLogin && <Grid sx={{ background: '#5280fc', minHeight: '100vh', p: 1 }}>
         {/* &nbsp; */}
         {/* <Inscription /> */}
         {/* <Profil /> */}

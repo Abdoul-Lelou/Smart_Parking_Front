@@ -58,11 +58,12 @@ export default function Inscription() {
             setloading(false)
         }, 300);
 
-        //   if ( nom.length> 2 && prenom.length>= 4 && password.length>= 6 ) {
-        //     setactiveBtn(true);
-        //   }
+        return ()=>{
+            setEmail('');setPassword('');setprenom('');setnom('');setabonnement('');
+            setcode('');setconfirmPass('');settel('')
+        }
 
-    }, [])
+    }, [successStatus])
 
 
 
@@ -137,6 +138,7 @@ export default function Inscription() {
     function isValidEmail(e: any) {
         return /\S+@\S+\.\S+/.test(e);
     }
+
     const checkEmail = (e: any) => {
         if (!isValidEmail(e)) {
             setError('Email invalid')
@@ -144,23 +146,6 @@ export default function Inscription() {
             setError(" ");
         }
         setEmail(e);
-    }
-
-    const checkPass = () => {
-        console.log(password ,'===' ,confirmPass);
-        console.log(password ,'===' ,confirmPass);
-
-        
-        // if (password === confirmPass) {
-        //     setisCheckPass(false)
-            
-        // } else {
-        //     setisCheckPass(true);
-        //     setTimeout(() => {
-        //         // if(!confirmPass) setconfirmPass(" ")
-        //         setisCheckPass(false)
-        //     }, 3000);
-        // }
     }
 
     function hasWhiteSpace(s: any) {

@@ -24,7 +24,7 @@ function App() {
 
 const socket = socketIOClient(ENDPOINT);
 
-socket.once('passe', d=>{
+socket.on('passe', d=>{
   console.log("passe: ",d);
   
 })

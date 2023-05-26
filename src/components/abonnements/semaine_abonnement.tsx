@@ -107,7 +107,8 @@ export default function SemaneAbonnement() {
     baseUrl.get('/getAll  ', { headers: { Authorization: token } }).then((res: any) => {
     
       let tab = []; let tabUser = []; let tabArchive=[];
-
+      console.log(res);
+      
       for (const iterator of res.data) {
 
         if (iterator.typeAbonnement === "semaine") {
@@ -117,14 +118,17 @@ export default function SemaneAbonnement() {
             setabonnementArchive(tabArchive)
 
           }else{
-            
             tab.push(iterator)
             setabonnementSemaine(tab)
           }
 
         } else if (userRole === "user") {
+          console.log("test :", iterator?._id == "6462e2b86673a91e29fc0906" );
+          
           if (iterator._id === uid) {
             tabUser.push(iterator);
+            console.log(iterator);
+            
             setabonnements(tabUser)
           }
         } 

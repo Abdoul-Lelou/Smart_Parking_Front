@@ -36,6 +36,13 @@ export default function MenuDashboard() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const logout=()=>{
+    if (typeof localStorage !== 'undefined') {
+      localStorage.clear();
+      // Additional code
+      window.location.pathname ='';
+    }
+  }
 
   const linkStyle = {
     textDecoration: 'none'
@@ -446,7 +453,7 @@ export default function MenuDashboard() {
               selected={index === 6}
               // variant={index === 5 ? 'soft' : 'plain'}
               // color={index === 5 ? 'light' : undefined}
-              onClick={() => {setIndex(6); window.location.pathname =''}}
+              onClick={() => {setIndex(6); logout()}}
             >
               <ListItemDecorator>
                 <Logout  />

@@ -48,8 +48,11 @@ export default function EditProfil() {
 
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword2, setShowPassword2] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
+
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -127,63 +130,6 @@ export default function EditProfil() {
 
                                     
                                 {/* </FormControl> */}
-
-                                <FormControl sx={{ width: '37ch' }} variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Nouveau mot de passe</InputLabel>
-                                    <OutlinedInput
-                                        id="password"
-                                       
-                                        size='medium'
-                                        value={password}
-                                        onChange={(e) => {
-                                            setPassword(e.target.value); 
-                                            e.target.value.length < 4 && setisPassLength(true)
-                                            e.target.value.length >= 4 && setisPassLength(false)
-                                        }}
-                                        type={showPassword ? 'text' : 'password'}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
-                                                    edge="end"
-                                                >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        label="Password"
-                                    />
-                                { isPassLength && <Typography variant='subtitle2' color="red">Minimum 4 caratéres</Typography>}
-
-                                </FormControl>
-                                <FormControl sx={{ width: '37ch' }} variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Confirmer mot de passe</InputLabel>
-                                    <OutlinedInput
-                                        id="confirmpassword"
-                                        type={showPassword ? 'text' : 'password'}
-                                        value={confirmPass}
-                                        onChange={(e:any) => {
-                                            setconfirmPass(e.target.value); 
-                                            password !== e.target.value ? setisConfirm(true):setisConfirm(false)
-                                        }}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword}
-                                                    edge="end"
-                                                >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                        label="Password"
-                                    />
-                                    {isConfirm && <Typography variant='subtitle2' color="red">Mot de passe ne correspond pas</Typography>}
-                                </FormControl>
                                 <FormControl sx={{  width: '37ch' }} variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Actuel mot de passe</InputLabel>
                                     <OutlinedInput
@@ -210,11 +156,96 @@ export default function EditProfil() {
                                         label="Password"
                                     />
                                  {isNewPassLength && <Typography variant='subtitle2' color="red">Minimum 4 caratéres</Typography>}
-                                </FormControl>
+                                </FormControl>  
+                                <FormControl sx={{ width: '37ch' }} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Nouveau mot de passe</InputLabel>
+                                    <OutlinedInput
+                                        id="password"
+                                       
+                                        size='medium'
+                                        value={password}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value); 
+                                            e.target.value.length < 4 && setisPassLength(true)
+                                            e.target.value.length >= 4 && setisPassLength(false)
+                                        }}
+                                        type={showPassword2 ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword2}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        label="Password"
+                                    />
+                                { isPassLength && <Typography variant='subtitle2' color="red">Minimum 4 caratéres</Typography>}
 
+                                </FormControl>
+                                <FormControl sx={{ width: '37ch' }} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Confirmer mot de passe</InputLabel>
+                                    <OutlinedInput
+                                        id="confirmpassword"
+                                        type={showPassword2 ? 'text' : 'password'}
+                                        value={confirmPass}
+                                        onChange={(e:any) => {
+                                            setconfirmPass(e.target.value); 
+                                            password !== e.target.value ? setisConfirm(true):setisConfirm(false)
+                                        }}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword2}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        label="Password"
+                                    />
+                                    {isConfirm && <Typography variant='subtitle2' color="red">Mot de passe ne correspond pas</Typography>}
+                                </FormControl>
+                                
+                                &nbsp;
+
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    size='small'
+                                    variant="contained"
+                                    value={confirmPass}
+                                    disabled={!password || !oldpassword || !confirmPass}
+                                    onClick={e => {
+                                        login(e); setloader(true);
+                                        setTimeout(() => {
+                                            setloader(false)
+                                        }, 2000);
+                                    }}
+                                    // sx={{ mt: 3, mb: 2,width:'274px',height:'74px' ,}}
+                                    sx={{ maxHeight: '35px', maxWidth: '150px', }}
+                                    // disabled={!email || !password}
+                                >
+                                    {
+                                        !loader ?
+                                            "Modifier"
+                                            :
+                                            // <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                                            <CircularProgress color="success" size={25} />
+                                        // </Stack>
+
+                                    }
+                                </Button>
                                 
 
-                               <div>
+                               {/* <div>
                                <Button
                                     type="submit"
                                     fullWidth
@@ -258,7 +289,7 @@ export default function EditProfil() {
                                 >
                                     Annuler
                                 </Button>
-                               </div>
+                               </div> */}
 
                                 
                                 {/*  <Copyright sx={{ mt: 5 }} /> */}

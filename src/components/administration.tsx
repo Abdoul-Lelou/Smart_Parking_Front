@@ -33,7 +33,10 @@ import { Chip } from '@mui/joy';
 import { DirectionsCar, Fireplace, Keyboard, North, NotificationsActive, WaterfallChartRounded } from '@mui/icons-material';
 import { useState } from 'react';
 import { Fade, Tab, Tabs } from '@mui/material';
+
+
 import socketIOClient from "socket.io-client";
+
 const ENDPOINT = "http://localhost:8000/";
 
 
@@ -95,74 +98,79 @@ export default function FullScreenDialog() {
   const [value, setValue] = React.useState(0);
   const [site, setSite] = useState("");
   const ref = React.useRef<HTMLDivElement>(null);
+
   const socket = socketIOClient(ENDPOINT);
   
   React.useEffect(() => {
     if (ref.current) (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
 
-    console.log(socket);
+    // console.log(socket);
     
-    socket.once('barriere_mandela', msg=>{
-      if(msg === 1) setactifBarMandela(true); else setactifBarMandela(false) 
+    socket.on('barriere_mandela', msg=>{
+      if(msg === 0) setactifBarMandela(false);
+      else  setactifBarMandela(true) 
     })
 
-    socket.once('flamme_mandela', msg=>{
-      if(msg === 1) setactifFlammeMandela(true); else setactifFlammeMandela(false) 
+    socket.on('flamme_mandela', msg=>{
+      console.log(msg);
+      
+      if(msg == 1) setactifFlammeMandela(true); else setactifFlammeMandela(false) 
     })
 
-    socket.once('buzzer_mandela', msg=>{
+    socket.on('buzzer_mandela', msg=>{
+      // console.log("buzz :", msg);
+      
       if(msg === 1) setactifBellMandela(true); else setactifBellMandela(false) 
     })
 
-    socket.once('pompe_mandela', msg=>{
+    socket.on('pompe_mandela', msg=>{
       if(msg === 1) setactifPumpMandela(true); else setactifPumpMandela(false) 
     })
 
-    socket.once('mouvement_mandela', msg=>{
+    socket.on('mouvement_mandela', msg=>{
       if(msg === 1) setisMoveMandela(true); else setisMoveMandela(false) 
     })
 
 
 
-    socket.once('barriere_simplon', msg=>{
+    socket.on('barriere_simplon', msg=>{
       if(msg === 1) setactifBarSimplon(true); else setactifBarSimplon(false) 
     })
 
-    socket.once('flamme_simplon', msg=>{
+    socket.on('flamme_simplon', msg=>{
       if(msg === 1) setactifFlammeSimplon(true); else setactifFlammeSimplon(false) 
     })
 
-    socket.once('buzzer_simplon', msg=>{
+    socket.on('buzzer_simplon', msg=>{
       if(msg === 1) setactifBellSimplon(true); else setactifBellSimplon(false) 
     })
 
-    socket.once('pompe_simplon', msg=>{
+    socket.on('pompe_simplon', msg=>{
       if(msg === 1) setactifPumpSimplon(true); else setactifPumpSimplon(false) 
     })
 
-    socket.once('mouvement_simplon', msg=>{
+    socket.on('mouvement_simplon', msg=>{
       if(msg === 1) setisMoveSimplon(true); else setisMoveSimplon(false) 
     })
 
 
-
-    socket.once('barriere_surete', msg=>{
+    socket.on('barriere_surete', msg=>{
       if(msg === 1) setactifBarSurete(true); else setactifBarSurete(false) 
     })
 
-    socket.once('flamme_surete', msg=>{
+    socket.on('flamme_surete', msg=>{
       if(msg === 1) setactifFlammeSurete(true); else setactifFlammeSurete(false) 
     })
 
-    socket.once('buzzer_surete', msg=>{
+    socket.on('buzzer_surete', msg=>{
       if(msg === 1) setactifBellSurete(true); else setactifBellSurete(false) 
     })
 
-    socket.once('pompe_surete', msg=>{
+    socket.on('pompe_surete', msg=>{
       if(msg === 1) setactifPumpSurete(true); else setactifPumpSurete(false) 
     })
 
-    socket.once('mouvement_surete', msg=>{
+    socket.on('mouvement_surete', msg=>{
       if(msg === 1) setisMoveSurete(true); else setisMoveSurete(false) 
     })
 
@@ -174,7 +182,9 @@ export default function FullScreenDialog() {
     setValue(newValue);
   };
 
+  socket.emit('admin', "allumer")
 
+  
 
 
   return (

@@ -25,21 +25,34 @@ const List_client=() => {
     })
   }, [])
 
-    const checkDate =(dateInMilliseconds: string | number | Date)=>{
-      // const dateInMilliseconds = 1651161600000; // Replace this with the actual date in milliseconds
-      const dateObject = new Date(dateInMilliseconds);
-      const currentDate = new Date();
+  const checkDate =(dateInMilliseconds: string | number | Date)=>{
+    // const dateInMilliseconds = 1651161600000; // Replace this with the actual date in milliseconds
+    const dateObject = new Date(dateInMilliseconds);
+    const currentDate = new Date();
 
-      currentDate.setMonth(currentDate.getMonth() - 1); // Subtract one month from the current date
+    currentDate.setMonth(currentDate.getMonth() - 1); // Subtract one month from the current date
 
-      if (dateObject > currentDate) {
-        // console.log('The date is within the last month.');
-        return false
-      } else {
-        // console.log('The date is more than a month ago.');
-        return true
-      }
+    if (dateObject > currentDate) {
+      // console.log('The date is within the last month.');
+      return false
+    } else {
+      // console.log('The date is more than a month ago.');
+      return true
     }
+  }
+
+  const formatDateAndTime = (dateTimeString:any) => {
+    const dateTime = new Date(dateTimeString);
+    
+    const day = dateTime.getDate().toString().padStart(2, '0');
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+    const year = dateTime.getFullYear().toString();
+    
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
 
     
   
@@ -108,7 +121,7 @@ const List_client=() => {
         {
             field: 'code',
             // headerName: 'Email',
-            width: 80,
+            width: 20,
             editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
@@ -153,7 +166,7 @@ const List_client=() => {
           {
             field: 'dateInscrit',
             // headerName: 'Email',
-            width: 100,
+            width: 120,
             editable: false,
             align:'center', flex:10, headerAlign:'center',
             renderHeader: (params: GridColumnHeaderParams) => (
@@ -166,7 +179,8 @@ const List_client=() => {
             ),
             renderCell: (params) => (
                 <>
-                  {moment(params?.row?.dateInscrit).format("L")}
+                  {/* {moment(params?.row?.dateInscrit).format("L")} */}
+                  {formatDateAndTime(params?.row?.dateInscrit)}
                 </>
               ),
           },

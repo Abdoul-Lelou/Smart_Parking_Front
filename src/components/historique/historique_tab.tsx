@@ -99,22 +99,18 @@ export default function HistoriqueTab() {
   }, [])
 
  
-  const tabStation =()=>{
-
-    const newTabs = [...station];
-    console.log(station);
+  const formatDateAndTime = (dateTimeString:any) => {
+    const dateTime = new Date(dateTimeString);
     
-    for (const iterator1 of station) {
-      for (const iterator2 of user) {
-        if(iterator1.user === iterator1._id){
-          
-          // newTabs[1].items.push(pickedItem);
-        }
-        // setTabs(newTabs);
-        // setstationTab(...[{ matricule: iterator1?.matricule, entrer: iterator1.entrer, sortie: iterator1.sortie, site: iterator1.place, dateEntrer: iterator1.dateEntrer, dateSortie:iterator1.dateSortie }])
-      }
-    }
-  }
+    const day = dateTime.getDate().toString().padStart(2, '0');
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+    const year = dateTime.getFullYear().toString();
+    
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
 
   
 
@@ -212,7 +208,8 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>      
-          {moment(params?.row?.dateEntrer).add('days').calendar()}
+          {/* {moment(params?.row?.dateEntrer).add('days').calendar()} */}
+          {formatDateAndTime(params?.row?.dateEntrer)}
         </>
       ),
     },
@@ -232,7 +229,8 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>                
-          {params?.row?.dateSortie? moment(params?.row?.dateSortie).add('days').calendar():"Pas encore"}
+          {/* {params?.row?.dateSortie? moment(params?.row?.dateSortie).add('days').calendar():"Pas encore"} */}
+          {params?.row?.dateSortie? formatDateAndTime(params?.row?.dateSortie):"Pas encore"}
         </>
       ),
     },
@@ -282,7 +280,7 @@ export default function HistoriqueTab() {
       renderCell: (params) => (
         <>      
           {
-          params?.row?.sortie === true  ? <Chip variant='filled' color='success' label="Oui"/>
+          params?.row?.entrer === true  ? <Chip variant='filled' color='success' label="Oui"/>
           : <Chip variant='outlined' color='error' label="Non" />
           }   
         </>
@@ -342,7 +340,7 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>      
-          {moment(params?.row?.dateEntrer).format('ll  HH:mm:ss')}
+          {formatDateAndTime(params?.row?.dateEntrer)}
         </>
       ),
     },
@@ -362,7 +360,8 @@ export default function HistoriqueTab() {
       ),
       renderCell: (params) => (
         <>      
-          {moment(params?.row?.dateSortie).format(' ll  HH:mm:ss')}
+          {/* {moment(params?.row?.dateSortie).format(' ll  HH:mm:ss')} */}
+          {params?.row?.dateSortie? formatDateAndTime(params?.row?.dateSortie):"Pas encore"}
         </>
       ),
     },
@@ -415,10 +414,12 @@ export default function HistoriqueTab() {
             paginationModel: {
               pageSize: 5,
             },
+            
           },
           sorting: {
             sortModel: [{ field: 'dateEntrer', sort: 'asc' }],
           },
+          
         }}
         pageSizeOptions={[5]}
         // checkboxSelection

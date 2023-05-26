@@ -37,15 +37,15 @@ export default function Card_place() {
   baseUrl.get('/getSite  ',{headers: {Authorization : token}}).then((res:any) => {
 
     for (const iterator of res.data) {
-        console.log(iterator);
-        
+      
       if (iterator.nom ==="Mandela") {
-
+        
         setplaceUn(()=> iterator.occupe)
         settotalUn(()=> iterator.nombre)
-
-      } else if (iterator.nom ==="Surêté") {
-
+        
+      } else if (iterator.nom ==="Surete") {
+        
+        console.log(iterator.nombre);
         setplaceDeux(()=> iterator.occupe)
         settotalDeux(()=> iterator.nombre)
 
